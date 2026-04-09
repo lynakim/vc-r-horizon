@@ -44,6 +44,20 @@ QUALITY_MARKERS = {
     'public_demo': '^',
 }
 
+# Notable non-frontier systems to label on the main plot.
+# Maps system_name → (x_offset, y_offset) for annotation placement.
+NOTABLE_SYSTEMS = {
+    'RT-1': (10, -14),
+    'RT-2': (10, 10),
+    'SayCan': (-60, 12),
+    'Mobile ALOHA': (10, -14),
+    'FurnitureBench': (-85, -14),
+    'Diffusion Policy': (-95, 8),
+    'QT-Opt': (8, -14),
+    'HIL-SERL': (10, -14),
+    'Figure 02 at BMW': (-110, -14),
+}
+
 
 def load_data():
     df = pd.read_csv(DATA_PATH)
@@ -108,6 +122,7 @@ def plot_main(df, frontier_df, save=True):
                   linewidth=1.5)
 
     # Label frontier points
+    frontier_names = set(frontier_df['system_name'].values) if len(frontier_df) > 0 else set()
     for _, row in frontier_df.iterrows():
         label = row['system_name']
         offset = (10, 10)
@@ -115,6 +130,25 @@ def plot_main(df, frontier_df, save=True):
                    textcoords="offset points", xytext=offset,
                    fontsize=8, fontweight='bold', color='#333',
                    arrowprops=dict(arrowstyle='->', color='#999', lw=0.8))
+
+    # Label notable non-frontier systems
+    for _, row in df.iterrows():
+        name = row['system_name']
+        # Check if this system (or a prefix of it) matches a notable entry
+        matched_key = None
+        for key in NOTABLE_SYSTEMS:
+            if key in name:
+                matched_key = key
+                break
+        if matched_key is None:
+            continue
+        if name in frontier_names:
+            continue  # already labeled as frontier
+        offset = NOTABLE_SYSTEMS[matched_key]
+        ax.annotate(matched_key, (row['date'], row['human_time_seconds']),
+                   textcoords="offset points", xytext=offset,
+                   fontsize=7, fontstyle='italic', color='#666',
+                   arrowprops=dict(arrowstyle='->', color='#bbb', lw=0.6))
 
     # Y-axis: log scale with human-readable labels
     ax.set_yscale('log')
@@ -255,6 +289,7 @@ def plot_with_metr_overlay(df, frontier_df, save=True):
                        arrowprops=dict(arrowstyle='->', color='#999', lw=0.8))
 
     # All robot data points
+    frontier_names = set(frontier_df['system_name'].values) if len(frontier_df) > 0 else set()
     for cat, color in CATEGORY_COLORS.items():
         mask = df['category'] == cat
         cat_data = df[mask]
@@ -262,6 +297,22 @@ def plot_with_metr_overlay(df, frontier_df, save=True):
             ax.scatter(cat_data['date'], cat_data['human_time_seconds'],
                       c=color, s=50, alpha=0.4, edgecolors='white', linewidth=0.5,
                       label=CATEGORY_LABELS[cat], zorder=3)
+
+    # Label notable non-frontier systems on comparison plot too
+    for _, row in df.iterrows():
+        name = row['system_name']
+        matched_key = None
+        for key in NOTABLE_SYSTEMS:
+            if key in name:
+                matched_key = key
+                break
+        if matched_key is None or name in frontier_names:
+            continue
+        offset = NOTABLE_SYSTEMS[matched_key]
+        ax.annotate(matched_key, (row['date'], row['human_time_seconds']),
+                   textcoords="offset points", xytext=offset,
+                   fontsize=7, fontstyle='italic', color='#666',
+                   arrowprops=dict(arrowstyle='->', color='#bbb', lw=0.6))
 
     ax.set_yscale('log')
     y_ticks = [5, 10, 30, 60, 300, 600, 1800, 3600, 7200, 21600]
