@@ -96,21 +96,28 @@ def plot_main(df, frontier_df, save=True):
     """Main METR-style plot: all data points + frontier line."""
     fig, ax = plt.subplots(figsize=(14, 8))
 
-    # Plot all data points by category
+    # Plot all data points by category, splitting filled (≥50%) vs hollow (<50%)
     for cat, color in CATEGORY_COLORS.items():
         mask = df['category'] == cat
         cat_data = df[mask]
         if len(cat_data) == 0:
             continue
-        for quality, marker in QUALITY_MARKERS.items():
-            qmask = cat_data['data_quality'] == quality
-            subset = cat_data[qmask]
-            if len(subset) == 0:
-                continue
-            ax.scatter(subset['date'], subset['human_time_seconds'],
-                      c=color, marker=marker, s=80, alpha=0.7,
-                      label=f"{CATEGORY_LABELS[cat]} ({quality})",
+
+        # Reliable (≥50% success): filled markers
+        reliable = cat_data[cat_data['success_rate'] >= 50]
+        if len(reliable) > 0:
+            ax.scatter(reliable['date'], reliable['human_time_seconds'],
+                      c=color, marker='o', s=80, alpha=0.7,
+                      label=f"{CATEGORY_LABELS[cat]} (≥50%)",
                       edgecolors='white', linewidth=0.5, zorder=3)
+
+        # Unreliable (<50% success): hollow markers
+        unreliable = cat_data[cat_data['success_rate'] < 50]
+        if len(unreliable) > 0:
+            ax.scatter(unreliable['date'], unreliable['human_time_seconds'],
+                      facecolors='none', edgecolors=color, marker='o', s=80,
+                      alpha=0.5, linewidth=1.5, zorder=2,
+                      label=f"{CATEGORY_LABELS[cat]} (<50%, attempted)")
 
     # Plot frontier line
     if len(frontier_df) > 0:
@@ -288,15 +295,24 @@ def plot_with_metr_overlay(df, frontier_df, save=True):
                        fontsize=8, fontweight='bold', color='#333',
                        arrowprops=dict(arrowstyle='->', color='#999', lw=0.8))
 
-    # All robot data points
+    # All robot data points — filled (≥50%) vs hollow (<50%)
     frontier_names = set(frontier_df['system_name'].values) if len(frontier_df) > 0 else set()
     for cat, color in CATEGORY_COLORS.items():
         mask = df['category'] == cat
         cat_data = df[mask]
-        if len(cat_data) > 0:
-            ax.scatter(cat_data['date'], cat_data['human_time_seconds'],
+
+        reliable = cat_data[cat_data['success_rate'] >= 50]
+        if len(reliable) > 0:
+            ax.scatter(reliable['date'], reliable['human_time_seconds'],
                       c=color, s=50, alpha=0.4, edgecolors='white', linewidth=0.5,
                       label=CATEGORY_LABELS[cat], zorder=3)
+
+        unreliable = cat_data[cat_data['success_rate'] < 50]
+        if len(unreliable) > 0:
+            ax.scatter(unreliable['date'], unreliable['human_time_seconds'],
+                      facecolors='none', edgecolors=color, s=50, alpha=0.35,
+                      linewidth=1.2, zorder=2,
+                      label=f"{CATEGORY_LABELS[cat]} (<50%)")
 
     # Label notable non-frontier systems on comparison plot too
     for _, row in df.iterrows():
