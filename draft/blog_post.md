@@ -20,6 +20,21 @@ Following METR, we define the **manipulation task horizon** as:
 
 **Human-equivalent time** is how long a competent human would take to perform the same task. This enables direct comparison with METR's LLM agent results, which use the same unit.
 
+### Defining Tasks and Subtasks
+
+A key question for this analysis is: **what counts as a "task"?**
+
+We define a **task** as the full end-to-end objective given to the robot — the complete job it must finish autonomously, from start state to goal state, without human intervention. "Fold a basket of laundry" is one task. "Clean the kitchen" is one task.
+
+A **subtask** (or primitive) is a discrete manipulation action within that task — a single grasp, a single placement, a single wipe. "Pick up shirt," "fold shirt in half," and "place shirt on stack" are three subtasks of the laundry-folding task. The `num_subtasks` column in our dataset records how many such primitives compose each task.
+
+This distinction matters because task duration can be misleading without it. Consider two 10-minute tasks:
+
+- **Stacking 50 identical boxes** — 50 repetitions of the same pick-and-place primitive. Long duration, but low *compositional complexity*: each subtask is identical and independent, and failure on one box doesn't cascade.
+- **Making an espresso** — grinding beans, tamping, extracting, steaming milk, pouring, cleaning. Fewer subtasks, but each is different, order-dependent, and errors compound (grounds in the portafilter can't be un-tamped).
+
+Both take a human ~10 minutes, so they'd appear equivalent on our plot. But they represent fundamentally different levels of difficulty. We return to this issue in [Task Difficulty: Beyond Duration](#task-difficulty-beyond-duration) below.
+
 ### Data Collection
 
 We surveyed 35 robotic manipulation systems from published papers, benchmarks, and demonstrations spanning 2016–2025. For each, we recorded:
@@ -147,6 +162,22 @@ Several parallel efforts inform this analysis:
 
 - **ManipulationNet** ([manipulation-net.org](https://manipulation-net.org/)) is building standardized hardware kits and distributed evaluation to create a "historical record of robotic manipulation capability" — the closest analog to METR for robotics, but still in early stages.
 
+## Task Difficulty: Beyond Duration
+
+Human-equivalent time is a useful single metric for cross-domain comparison with METR, but it flattens important distinctions. Not all minutes are equally hard. We see at least three axes of difficulty that duration alone doesn't capture:
+
+**1. Compositional complexity.** How many *distinct* subtasks does the task require, and how do they depend on each other? A task with 12 different ordered subtasks (π0.6's laundry folding: sort, pick, shake, fold, stack — repeated across varied garments) is harder than a task with 12 identical subtasks (bin-picking 12 objects). Our dataset records `num_subtasks`, but this is a rough proxy — it counts steps without weighting their diversity or interdependence.
+
+**2. Error tolerance and recoverability.** Some tasks are forgiving: if you drop a box while stacking, you pick it up and try again. Others are not: if you crack an egg into a pan at the wrong moment, there's no undo. Tasks with irreversible steps or tight physical tolerances (e.g., Dactyl's Rubik's Cube, where one fumble drops the cube) are harder than their duration suggests. This is partly why success rates vary so widely — π0.6 achieves 97% on laundry folding but only 20% on box assembly, despite similar durations, because box assembly has tighter tolerances and less room for recovery.
+
+**3. Environmental variability.** A task performed on the same 5 objects in the same lab is easier than the same task performed zero-shot in a novel kitchen with unseen objects. The foundation model era (π0 onward) is notable not just for longer tasks but for performing them in diverse, unstructured environments — a qualitative shift that the time metric doesn't reflect.
+
+**Why we still use duration as the primary metric.** Despite these limitations, human-equivalent time has a key advantage: it's comparable across domains. METR uses it for LLM agents, and the cross-domain comparison (robotics at ~16 months doubling time vs. LLM agents at ~7 months) is one of the most informative outputs of this analysis. A multidimensional difficulty score would be more accurate but would sacrifice comparability.
+
+**What this means for interpretation.** The recent frontier systems (π0, π0.5, π0.6) aren't just doing *longer* tasks — they're doing *harder* tasks along all three axes: more diverse subtasks, less forgiving physical constraints, and more varied environments. The time metric undersells their progress. Conversely, some earlier long-duration data points (like Dactyl's Rubik's Cube) represent narrow but deep difficulty — a single rehearsed task executed with extreme dexterity. The frontier line treats these as equivalent, and readers should keep this nuance in mind.
+
+Future work could develop a composite difficulty score incorporating compositional complexity, error tolerance, and environmental diversity. For now, we flag these dimensions qualitatively and note where they affect the interpretation of specific data points.
+
 ## Limitations
 
 1. **Small frontier sample size.** We have only 6 frontier points spanning 9 years. The exponential fit is suggestive but not definitive.
@@ -159,7 +190,7 @@ Several parallel efforts inform this analysis:
 
 5. **The Rubik's Cube is an outlier.** Dactyl's Rubik's Cube solve is a unique single-task achievement that required massive compute and a custom setup. It's arguably not on the same "generality trajectory" as the foundation model era. Excluding it would change the fitted doubling time significantly.
 
-6. **"Task horizon" ≠ "useful work."** As critics of METR's approach have noted, a 15-minute task horizon doesn't mean robots can replace 15 minutes of human work. Real tasks involve variability, error recovery, and context that benchmarks don't capture.
+6. **"Task horizon" ≠ "useful work."** As critics of METR's approach have noted, a 15-minute task horizon doesn't mean robots can replace 15 minutes of human work. Real tasks involve variability, error recovery, and context that benchmarks don't capture. See [Task Difficulty: Beyond Duration](#task-difficulty-beyond-duration) for a fuller discussion of what the time metric misses.
 
 ## Conclusion
 

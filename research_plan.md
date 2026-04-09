@@ -186,7 +186,8 @@ Generate plots using Python (matplotlib/plotly):
 | **"Demo" vs. "benchmark"** | Include both but annotate. A YouTube demo with cherry-picked results gets flagged differently than a 100-trial benchmark |
 | **Human time estimation is subjective** | Document methodology, provide ranges, do sensitivity analysis |
 | **Some tasks are narrow, some are general** | Focus on the specific task demonstrated, not claimed generality |
-| **Multi-step tasks: what counts as "one task"?** | The full task as described/demonstrated. "Cook a meal" is one task even if it has 20 subtasks |
+| **Multi-step tasks: what counts as "one task"?** | A **task** is the full end-to-end objective completed autonomously (start state → goal state, no human intervention). A **subtask/primitive** is a discrete manipulation action within it. "Cook a meal" is one task with ~15 subtasks. Record `num_subtasks` to track compositional complexity |
+| **Duration ≠ difficulty** | Human-equivalent time is our primary metric for METR comparability, but it doesn't capture compositional complexity (diverse vs. repeated subtasks), error tolerance (recoverable vs. irreversible steps), or environmental variability (lab vs. novel settings). Discuss these dimensions qualitatively in the blog post and flag where they affect interpretation of specific frontier points |
 
 ## Deliverables (in this repo)
 
