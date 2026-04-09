@@ -1,19 +1,19 @@
 {
   "overall": {
-    "growth_rate_per_year": 0.7878157395315987,
-    "intercept": 1.2171372129713427,
-    "doubling_time_months": 10.558009632639136,
-    "doubling_time_years": 0.8798341360532613,
-    "r_squared": 0.8912438782643435,
+    "growth_rate_per_year": 0.5070797463285467,
+    "intercept": 2.7324669859442636,
+    "doubling_time_months": 16.403270347402326,
+    "doubling_time_years": 1.3669391956168606,
+    "r_squared": 0.8425003281679254,
     "growth_rate_95ci": [
-      0.5374469543618,
-      1.1545599903537573
+      0.2848007445674905,
+      0.6028772923255479
     ],
     "doubling_time_95ci_months": [
-      7.204273694059655,
-      15.476441161707593
+      13.796781322836473,
+      29.205563276707814
     ],
-    "n_points": 6
+    "n_points": 8
   },
   "by_category": {
     "tabletop": {
@@ -33,21 +33,21 @@
       "n_points": 6
     },
     "mobile_manipulation": {
-      "growth_rate_per_year": 1.5607285647325055,
-      "intercept": 0.0008213213606650088,
-      "doubling_time_months": 5.329412400512405,
-      "doubling_time_years": 0.44411770004270046,
-      "r_squared": 0.9442262705031812,
+      "growth_rate_per_year": 0.5944045214991319,
+      "intercept": 0.9005030997276008,
+      "doubling_time_months": 13.993443632866933,
+      "doubling_time_years": 1.166120302738911,
+      "r_squared": 0.8521045075972045,
       "growth_rate_95ci": [
-        0.6236196494215741,
-        1.9275029569421154
+        0.09588133197245564,
+        0.7857388634589779
       ],
       "doubling_time_95ci_months": [
-        4.315306566333394,
-        13.337883394845433
+        10.585916712968595,
+        86.7506322201368
       ],
-      "n_points": 5
+      "n_points": 6
     }
   },
-  "generated_at": "2026-04-09T03:30:57.290982"
+  "generated_at": "2026-04-09T03:34:16.634332"
 }

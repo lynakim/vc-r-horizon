@@ -60,7 +60,9 @@ The frontier shows three distinct phases:
 
 **Phase 2: The Rubik's Cube leap (2019).** OpenAI's follow-up pushed the frontier to **4 minutes** — solving a Rubik's Cube with a dexterous robot hand at 60% success. This remains one of the most impressive single-task demonstrations in manipulation history, and it held the frontier for nearly five years.
 
-**Phase 3: The foundation model era (2024–2025).** Mobile ALOHA (2024) broke the Rubik's Cube record with **10-minute** multi-step kitchen tasks at 80% success. π0 (2024), π0.5 and π0.6 (2025) pushed this further to **15-minute** household tasks. These systems are generalists — they can fold laundry, clean kitchens, and sort groceries, not just execute one rehearsed skill.
+**Phase 3: The foundation model era (2024–2025).** π0 (late 2024) broke through to **5-minute** multi-step tasks — folding towels, clearing tables, assembling boxes — at 75% success. π0.5 (2025) pushed to **10-minute** kitchen cleaning tasks, and π0.6 achieved **97% success on laundry folding** and >90% on espresso making. These systems are generalists — they can fold laundry, clean kitchens, and sort groceries, not just execute one rehearsed skill.
+
+Notably, Mobile ALOHA's cooking shrimp demo (often cited as a breakthrough) only achieved 40% autonomous success — below our 50% threshold. Its most reliable long task was "use two-door cabinet" at 85% (~90 seconds). The viral 3-course meal demo was actually teleoperated, not autonomous. This illustrates why rigorous success rate tracking matters.
 
 ### The 2019–2024 Plateau
 
@@ -77,7 +79,7 @@ This breadth-first strategy was arguably necessary — you need reliable primiti
 
 The comparison reveals:
 - **LLM agents are ~10–100x ahead** on task horizon, depending on the year
-- **Robot manipulation is growing at a comparable rate** when it is growing — the overall doubling time is ~10.6 months (95% CI: 7.2–15.5 months) vs. METR's ~7 months for LLM agents
+- **Robot manipulation is growing more slowly** — the overall doubling time is ~16.4 months (95% CI: 13.8–29.2 months) vs. METR's ~7 months for LLM agents, making it roughly **2.3x slower**
 - The robotics curve is **more stepped** than the LLM curve — progress comes in discrete jumps when new paradigms emerge (dexterous RL → foundation models), rather than the smooth exponential of LLM scaling
 
 The gap makes intuitive sense: LLM agents operate in the digital world where execution is instant and errors are cheaply recoverable. Robots must plan, perceive, and actuate in the physical world where every motion takes real time and mistakes can be catastrophic.
@@ -107,11 +109,11 @@ Fitting an exponential to the frontier:
 
 | Scope | Doubling Time | R² | Points |
 |---|---|---|---|
-| All categories combined | **10.6 months** (95% CI: 7.2–15.5) | 0.891 | 6 |
+| All categories combined | **16.4 months** (95% CI: 13.8–29.2) | 0.843 | 8 |
 | Tabletop only | 16.5 months | 0.769 | 6 |
-| Mobile manipulation only | 5.3 months | 0.944 | 5 |
+| Mobile manipulation only | 14.0 months | 0.852 | 6 |
 
-The overall doubling time of ~10.6 months places robot manipulation between METR's findings for LLM agents (~7 months) and self-driving (~20 months for Tesla FSD).
+The overall doubling time of ~16.4 months places robot manipulation between METR's findings for LLM agents (~7 months) and self-driving (~20 months for Tesla FSD), but closer to self-driving.
 
 ### Comparison with METR Domains
 
@@ -120,10 +122,10 @@ The overall doubling time of ~10.6 months places robot manipulation between METR
 | LLM agents (software/reasoning) | ~7 months | METR |
 | LLM agents (recent, 2024–25) | ~4 months | METR |
 | Web browsing (WebArena/OSWorld) | ~7 months | METR |
-| **Robot manipulation (this work)** | **~10.6 months** | **This analysis** |
+| **Robot manipulation (this work)** | **~16.4 months** | **This analysis** |
 | Self-driving (Tesla FSD) | ~20 months | METR |
 
-Robot manipulation falls roughly in the middle — faster than self-driving but slower than digital-world AI tasks. This is consistent with METR's finding that all domains show exponential growth but at different rates, likely reflecting the difficulty of the physical-world feedback loop.
+Robot manipulation is the second-slowest domain — roughly 2.3x slower than LLM agents but modestly faster than self-driving. This likely reflects the compounded difficulty of the physical-world feedback loop: every iteration requires real hardware, real sensor data, and real actuation, making the cycle time for improvement fundamentally longer than in purely digital domains.
 
 ## What's Driving the Recent Acceleration?
 
@@ -163,7 +165,7 @@ Several parallel efforts inform this analysis:
 
 The task horizon for robotic manipulation is growing — roughly doubling every 10.6 months. But the growth is uneven, with a notable five-year plateau from 2019–2024 when the field prioritized breadth over depth. The foundation model era (2024–present) has broken through this plateau, with generalist policies now completing 10–15 minute household tasks that would have been science fiction just two years ago.
 
-If the current exponential holds, we might expect robots to reliably complete **1-hour household tasks by ~2027** and **multi-hour complex tasks by ~2028**. But the history of this field suggests that progress comes in steps, not smooth curves — the next paradigm shift matters more than the trend line.
+If the current exponential holds, we might expect robots to reliably complete **1-hour household tasks by ~2028** and **multi-hour complex tasks by ~2030**. But the history of this field suggests that progress comes in steps, not smooth curves — the next paradigm shift matters more than the trend line.
 
 ## Dataset & Code
 
