@@ -58,7 +58,7 @@ The frontier shows three distinct phases:
 
 **Phase 1: Single-step grasping (2016–2018).** The earliest systems could grasp a single object (~4–5 seconds of human-equivalent time). The major breakthrough was OpenAI's Dactyl (2018), which reoriented a block using dexterous in-hand manipulation — a ~10-second task, but one requiring unprecedented dexterity.
 
-**Phase 2: The Rubik's Cube leap (2019).** OpenAI's follow-up pushed the frontier to **4 minutes** — solving a Rubik's Cube with a dexterous robot hand at 60% success. This remains one of the most impressive single-task demonstrations in manipulation history, and it held the frontier for nearly five years.
+**Phase 2: The Rubik's Cube leap (2019).** OpenAI's follow-up pushed the frontier to **4 minutes** — solving a Rubik's Cube with a dexterous robot hand at 60% success. This remains one of the most impressive single-task demonstrations in manipulation history, and it held the frontier for nearly five years. But as we show in the quantitative analysis below, it is better understood as an **outlier ahead of its time**: a task-specific achievement built on massive sim-to-real compute that didn't represent a general capability advance. At the ≥80% success threshold, the field was actually progressing steadily through the same period.
 
 **Phase 3: The foundation model era (2024–2025).** π0 (late 2024) broke through to **5-minute** multi-step tasks — folding towels, clearing tables, assembling boxes — at 75% success. π0.5 (2025) pushed to **10-minute** kitchen cleaning tasks, and π0.6 achieved **97% success on laundry folding** and >90% on espresso making. These systems are generalists — they can fold laundry, clean kitchens, and sort groceries, not just execute one rehearsed skill.
 
@@ -105,15 +105,33 @@ At the ≥30% threshold, the frontier extends further (systems attempting harder
 
 ### Doubling Time
 
-Fitting an exponential to the frontier:
+We fit a log-linear exponential model to the frontier — i.e., we regress log(task duration) on date — and report R² and the implied doubling time. Fitting the standard ≥50% frontier gives:
 
-| Scope | Doubling Time | R² | Points |
+| Scope | Doubling Time | R² | N |
 |---|---|---|---|
 | All categories combined | **16.4 months** (95% CI: 13.8–29.2) | 0.843 | 8 |
 | Tabletop only | 16.5 months | 0.769 | 6 |
 | Mobile manipulation only | 14.0 months | 0.852 | 6 |
 
 The overall doubling time of ~16.4 months places robot manipulation between METR's findings for LLM agents (~7 months) and self-driving (~20 months for Tesla FSD), but closer to self-driving.
+
+### The Dactyl Rubik's Cube: Outlier Analysis
+
+The R² of 0.84 hides a critical structural issue. The Dactyl Rubik's Cube result (240s, **60% success**, October 2019) dominates the ≥50% frontier for five years: no other system exceeds 240 seconds at ≥50% success until Pi0 in late 2024. This creates an artificial plateau that degrades the fit.
+
+Two alternative framings expose this:
+
+| Scenario | Doubling Time | R² | N | Key difference |
+|---|---|---|---|---|
+| ≥50% success (standard) | 16.4 months | 0.84 | 8 | Dactyl holds frontier 2019–2024 |
+| **≥80% success (high reliability)** | **15.7 months** | **0.98** | **8** | Dactyl excluded (only 60% success) |
+| ≥50%, Dactyl excluded | 15.1 months | 0.98 | 14 | Underlying progress revealed |
+
+The headline finding: **the doubling time is robust** — it barely moves across scenarios (15–16.4 months). But **the quality of fit jumps dramatically**, from R² = 0.84 to R² = 0.98, once Dactyl is either excluded by the success threshold or removed directly.
+
+The ≥80% scenario is the most revealing. Without Dactyl's shadow, a different set of systems appears as the frontier: TransporterNet (90% success, 30s, 2021), CLIPort (85%, 40s, 2021), TidyBot (85%, 60s, 2022), and ACT/ALOHA (85%, 120s, 2023) all become frontier points, filling the apparent "gap" with a nearly straight log-linear progression from 2016 to 2025.
+
+The conclusion: **Dactyl Rubik's Cube was ahead of its time.** It was a task-specific achievement built on massive simulation compute and domain randomization — genuinely remarkable, but not on the general capability trajectory the rest of the field was following. At ≥80% reliability, the field was advancing at a remarkably steady pace throughout 2019–2024. Dactyl's result masked that progress in the ≥50% view by setting a 4-minute bar that took general-purpose systems five years to match.
 
 ### Comparison with METR Domains
 
@@ -157,13 +175,13 @@ Several parallel efforts inform this analysis:
 
 4. **Selection bias.** We may be missing systems that pushed the frontier but weren't widely cited or didn't report success rates.
 
-5. **The Rubik's Cube is an outlier.** Dactyl's Rubik's Cube solve is a unique single-task achievement that required massive compute and a custom setup. It's arguably not on the same "generality trajectory" as the foundation model era. Excluding it would change the fitted doubling time significantly.
+5. **The Rubik's Cube is an outlier.** Dactyl's Rubik's Cube solve is a unique single-task achievement that required massive compute and a custom setup. Excluding it improves R² from 0.84 to 0.98, but barely changes the doubling time estimate (16.4 → 15.1 months) — the outlier affects fit quality far more than the rate itself. We report all three scenarios (≥50%, ≥80%, ≥50% without Dactyl) in the quantitative analysis.
 
 6. **"Task horizon" ≠ "useful work."** As critics of METR's approach have noted, a 15-minute task horizon doesn't mean robots can replace 15 minutes of human work. Real tasks involve variability, error recovery, and context that benchmarks don't capture.
 
 ## Conclusion
 
-The task horizon for robotic manipulation is growing — roughly doubling every 10.6 months. But the growth is uneven, with a notable five-year plateau from 2019–2024 when the field prioritized breadth over depth. The foundation model era (2024–present) has broken through this plateau, with generalist policies now completing 10–15 minute household tasks that would have been science fiction just two years ago.
+The task horizon for robotic manipulation is growing — roughly doubling every 16.4 months (or ~15 months when measured at ≥80% reliability). But the growth is uneven, with a notable five-year plateau from 2019–2024 when the field prioritized breadth over depth. The foundation model era (2024–present) has broken through this plateau, with generalist policies now completing 10–15 minute household tasks that would have been science fiction just two years ago.
 
 If the current exponential holds, we might expect robots to reliably complete **1-hour household tasks by ~2028** and **multi-hour complex tasks by ~2030**. But the history of this field suggests that progress comes in steps, not smooth curves — the next paradigm shift matters more than the trend line.
 
