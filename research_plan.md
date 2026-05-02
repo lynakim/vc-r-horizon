@@ -20,7 +20,6 @@ Examples of calibration:
 | Single pick-and-place (one object) | ~5 seconds |
 | Sort 5 objects into bins | ~30 seconds |
 | OpenAI Dactyl block reorientation | ~10 seconds |
-| OpenAI Dactyl Rubik's cube solve | ~3-5 minutes |
 | IKEA furniture assembly (simple shelf) | ~15-30 minutes |
 | Fold 5 T-shirts from a basket | ~5 minutes |
 | Cook a 3-course meal | ~60-90 minutes |
@@ -46,7 +45,6 @@ Two categories, plotted together and separately to see which tells a clearer sto
 - **BC/imitation learning baselines** (2017-2018): Simple single-step manipulation
 
 ### Era 2: Multi-Step Emerges (~2019-2021)
-- **OpenAI Rubik's Cube** (2019): Dexterous solve, 60% success on 15-move scrambles. Human time: ~3-5 min
 - **IKEA Furniture Assembly** (Lee et al., 2021): Multi-step assembly in sim. Human time: ~15-30 min (varies by piece)
 - **SayCan** (Ahn et al., 2022): Language-conditioned mobile manipulation, multi-step kitchen tasks. Human time: ~1-3 min
 - **Inner Monologue** (2022): Multi-step tasks with language feedback
@@ -98,7 +96,7 @@ Two categories, plotted together and separately to see which tells a clearer sto
 - **Mobile ALOHA** (2024): Demo collection times documented
 
 **Papers with success rates + well-defined tasks** (human time estimable with high confidence):
-- **OpenAI Dactyl** (2018, 2019): 60% on 15-move Rubik's Cube — human solve time is well-studied (~3-5 min for casual solver)
+- **OpenAI Dactyl Block** (2018): 80% on in-hand block reorientation — generic in-hand task, ~10s human time
 - **RT-1, RT-2** (2022, 2023): Extensive success rate tables, single-step tasks with clear descriptions
 - **SayCan** (2022): Multi-step kitchen tasks with step-by-step breakdown
 - **π0, π0.5, π0.6** (2024-2025): Task videos + success rates for laundry, cleanup, etc.

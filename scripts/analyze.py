@@ -25,9 +25,16 @@ def load_data():
     return df
 
 
-def compute_frontier(df, success_threshold=50):
-    """Compute frontier envelope at given success threshold."""
+def compute_frontier(df, success_threshold=50, real_only=True):
+    """Compute frontier envelope at given success threshold.
+
+    By default the frontier is defined over real-world systems only —
+    sim-only results are tracked elsewhere but do not anchor the
+    envelope. Set real_only=False to include sim-only systems.
+    """
     filtered = df[df['success_rate'] >= success_threshold].copy()
+    if real_only:
+        filtered = filtered[filtered['sim_or_real'] == 'real']
     filtered = filtered.sort_values('date')
     frontier_points = []
     max_time = 0
@@ -107,17 +114,30 @@ def fit_exponential(frontier_df):
 
 
 def analyze_by_category(df):
-    """Analyze each category separately."""
+    """Analyze each category separately (real-world frontier)."""
     results = {}
     for cat in df['category'].unique():
         cat_data = df[df['category'] == cat]
-        frontier = compute_frontier(cat_data, success_threshold=50)
+        frontier = compute_frontier(cat_data, success_threshold=50, real_only=True)
         if len(frontier) >= 3:
             fit = fit_exponential(frontier)
             results[cat] = fit
         else:
             results[cat] = {'error': f'Only {len(frontier)} frontier points, need ≥3'}
     return results
+
+
+def analyze_sim_sensitivity(df):
+    """Compare frontier fits with vs without sim systems."""
+    out = {}
+    for label, real_only in [('real_only', True), ('sim_and_real', False)]:
+        f = compute_frontier(df, success_threshold=50, real_only=real_only)
+        if len(f) >= 3:
+            out[label] = fit_exponential(f)
+            out[label]['frontier_systems'] = f['system_name'].tolist()
+        else:
+            out[label] = {'error': f'Only {len(f)} frontier points'}
+    return out
 
 
 def compare_with_metr():
@@ -169,32 +189,27 @@ def print_results(results, category_results, metr_comparison):
         print(f"  Ratio vs METR overall (7mo): {ratio:.1f}x slower")
 
 
-def save_results(results, category_results):
+def _serialize(d):
+    out = {}
+    for k, v in d.items():
+        if isinstance(v, (np.floating, np.integer)):
+            out[k] = float(v)
+        elif isinstance(v, tuple):
+            out[k] = [float(x) if x is not None else None for x in v]
+        else:
+            out[k] = v
+    return out
+
+
+def save_results(results, category_results, sim_sensitivity=None):
     """Save analysis results to JSON."""
     output = {
-        'overall': results if results else None,
-        'by_category': {},
+        'frontier_definition': 'real-world systems, success_rate >= 50%',
+        'overall': _serialize(results) if results else None,
+        'by_category': {cat: _serialize(res) for cat, res in category_results.items()},
+        'sim_sensitivity': {k: _serialize(v) for k, v in (sim_sensitivity or {}).items()},
         'generated_at': datetime.now().isoformat(),
     }
-    for cat, res in category_results.items():
-        serializable = {}
-        for k, v in res.items():
-            if isinstance(v, (np.floating, np.integer)):
-                serializable[k] = float(v)
-            elif isinstance(v, tuple):
-                serializable[k] = [float(x) if x is not None else None for x in v]
-            else:
-                serializable[k] = v
-        output['by_category'][cat] = serializable
-
-    # Convert numpy types in overall results
-    if output['overall']:
-        for k, v in output['overall'].items():
-            if isinstance(v, (np.floating, np.integer)):
-                output['overall'][k] = float(v)
-            elif isinstance(v, tuple):
-                output['overall'][k] = [float(x) if x is not None else None for x in v]
-
     path = os.path.join(FIGURES_DIR, '..', 'data', 'analysis_results.json')
     with open(path, 'w') as f:
         json.dump(output, f, indent=2)
@@ -210,9 +225,9 @@ def main():
         print("No data. Populate data/manipulation_horizons.csv first.")
         return
 
-    # Compute frontier
-    frontier = compute_frontier(df, success_threshold=50)
-    print(f"Frontier points: {len(frontier)}")
+    # Compute frontier (real-world only is the canonical definition)
+    frontier = compute_frontier(df, success_threshold=50, real_only=True)
+    print(f"Frontier points (real-world, ≥50%): {len(frontier)}")
 
     # Fit exponential
     results = fit_exponential(frontier) if len(frontier) >= 3 else None
@@ -220,12 +235,21 @@ def main():
     # By category
     category_results = analyze_by_category(df)
 
+    # Sim sensitivity
+    sim_sensitivity = analyze_sim_sensitivity(df)
+
     # METR comparison data
     metr_comparison = compare_with_metr()
 
     # Print and save
     print_results(results, category_results, metr_comparison)
-    save_results(results, category_results)
+    print(f"\n--- Sim Sensitivity ---")
+    for k, v in sim_sensitivity.items():
+        if 'error' in v:
+            print(f"  {k}: {v['error']}")
+        else:
+            print(f"  {k}: doubling={v['doubling_time_months']:.1f}mo, R²={v['r_squared']:.3f}, N={v['n_points']}")
+    save_results(results, category_results, sim_sensitivity)
 
 
 if __name__ == '__main__':

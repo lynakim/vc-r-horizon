@@ -2,7 +2,7 @@
 """
 Analyze the doubling time of the frontier task horizon.
 Fits log(duration) ~ date (exponential growth model) and reports R², doubling time.
-Compares: full frontier vs ≥80% success vs without Dactyl Rubik's Cube.
+Compares: ≥50% (canonical) vs ≥80% high-reliability vs sim-included sensitivity.
 """
 
 import pandas as pd
@@ -21,8 +21,10 @@ def load_data():
     return df
 
 
-def compute_frontier(df, success_threshold=50):
+def compute_frontier(df, success_threshold=50, real_only=True):
     filtered = df[df['success_rate'] >= success_threshold].copy()
+    if real_only:
+        filtered = filtered[filtered['sim_or_real'] == 'real']
     filtered = filtered.sort_values('date')
     frontier_points = []
     max_time = 0
@@ -78,24 +80,20 @@ def main():
     print("=" * 60)
     print("FRONTIER DOUBLING TIME ANALYSIS")
     print("Fitting: log(task_duration) ~ date (exponential growth model)")
+    print("Canonical frontier = real-world systems only.")
     print("=" * 60)
 
-    # 1. Standard frontier: ≥50% success
-    f50 = compute_frontier(df, success_threshold=50)
-    fit_exponential(f50, "All frontier points (≥50% success)")
+    # 1. Canonical frontier: real-world, ≥50% success
+    f50 = compute_frontier(df, success_threshold=50, real_only=True)
+    fit_exponential(f50, "Real-world frontier (≥50% success)")
 
-    # 2. High-reliability frontier: ≥80% success
-    f80 = compute_frontier(df, success_threshold=80)
-    fit_exponential(f80, "High-reliability frontier (≥80% success)")
+    # 2. High-reliability frontier: real-world, ≥80% success
+    f80 = compute_frontier(df, success_threshold=80, real_only=True)
+    fit_exponential(f80, "Real-world high-reliability frontier (≥80% success)")
 
-    # 3. ≥50% but without Dactyl Rubik's Cube
-    df_no_dactyl = df[df['system_name'] != "OpenAI Dactyl - Rubik's Cube"].copy()
-    f_no_dactyl = compute_frontier(df_no_dactyl, success_threshold=50)
-    fit_exponential(f_no_dactyl, "≥50% success, Dactyl Rubik's Cube removed")
-
-    # 4. ≥80% without Dactyl (it's 60% so already excluded, just confirm)
-    print("\n\nNote: Dactyl Rubik's Cube has 60% success, so it is already")
-    print("excluded from the ≥80% scenario above.")
+    # 3. Sensitivity: include sim systems at ≥50%
+    f_sim = compute_frontier(df, success_threshold=50, real_only=False)
+    fit_exponential(f_sim, "Sensitivity: ≥50% incl. sim systems")
 
 
 if __name__ == '__main__':

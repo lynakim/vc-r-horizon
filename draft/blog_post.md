@@ -30,7 +30,7 @@ Each of these on its own would be manageable; together, they mean we're never co
 
 Given that, we made consistent choices and documented them. We applied the same inclusion bar to every row (real hardware, autonomous control, ≥10 real-world trials, success rate from a documented protocol). We tracked binary vs. rubric success in a dedicated column rather than averaging them together. We treated sim and real-world results as separate frontiers. We recorded human-equivalent time with explicit confidence tiers, and used measured baselines where we could.
 
-What we cannot do is make the underlying evaluations comparable in the way METR's are. There are judgment calls on essentially every row, and a reasonable analyst would draw the frontier somewhat differently than we have. The dataset, the inclusion criteria, and the per-row provenance are all in the repository so that anyone who disagrees with a specific call can swap it out and re-run the analysis. We think the headline shape — exponential growth, ~14-month doubling at ≥50%, a real plateau from 2019–2024, a real acceleration from 2024 — survives most reasonable variations on those calls. The exact numbers will not.
+What we cannot do is make the underlying evaluations comparable in the way METR's are. There are judgment calls on essentially every row, and a reasonable analyst would draw the frontier somewhat differently than we have. The dataset, the inclusion criteria, and the per-row provenance are all in the repository so that anyone who disagrees with a specific call can swap it out and re-run the analysis. We think the headline shape — exponential growth, ~15-month doubling at ≥50%, multi-year stalls broken by paradigm shifts, a real acceleration from 2024 — survives most reasonable variations on those calls. The exact numbers will not.
 
 ## Methodology
 
@@ -100,23 +100,23 @@ Beyond the structural heterogeneity discussed above, three sources of per-row no
 
 The frontier shows three distinct phases:
 
-**Phase 1: Single-step grasping (2016–2018).** The earliest systems could grasp a single object (~4–5 seconds of human-equivalent time). The major breakthrough was OpenAI's Dactyl (2018), which reoriented a block using dexterous in-hand manipulation — a ~10-second task, but one requiring unprecedented dexterity.
+**Phase 1: Single-step grasping (2016–2018).** The earliest systems could grasp a single object (~4–5 seconds of human-equivalent time). Levine et al., Dex-Net, and QT-Opt all sat in this band. The notable cap on the period was OpenAI's Dactyl Block (2018), which reoriented a block using dexterous in-hand manipulation — a ~10-second task, but one requiring unprecedented dexterity for the time.
 
-**Phase 2: The Rubik's Cube leap (2019).** OpenAI's follow-up pushed the frontier to **4 minutes** — solving a Rubik's Cube with a dexterous robot hand at 60% success. This remains one of the most impressive single-task demonstrations in manipulation history, and it held the frontier for nearly five years. But as we show in the quantitative analysis below, it is better understood as a **point ahead of its time**: a task-specific achievement built on massive sim-to-real compute that didn't represent a general capability advance. "Ahead of its time" here means it set a 4-minute bar (at the bare-minimum 60% success rate) that *no other real-world system reached at any reliability* until Pi0 in late 2024 — but the rest of the field was still advancing steadily on harder reliability thresholds during the same period.
+**Phase 2: LLM planners push to ~2 minutes (2022).** After a roughly four-year stall at sub-15-second tasks, the frontier jumped when LLM-driven planners arrived. SayCan (90s, Apr 2022), Inner Monologue (90s, Aug 2022), and Code as Policies (120s, Sep 2022) used language models to chain primitive skills into multi-step kitchen and tabletop tasks. The behaviors at the bottom of the stack were still short, but the field had figured out how to compose them.
 
-**Phase 3: The foundation model era (2024–2025).** π0 (late 2024) reported ~70% partial-credit progress on **5-minute** post-train tasks — folding towels, clearing tables, assembling boxes. π0.5 (2025) reported ~70% partial-credit progress on **10-minute** kitchen and bedroom cleaning tasks in novel homes. π0.6 achieved **97% binary success on a single-shirt fold** (200s) and ~90% partial-credit progress on espresso-making. These systems are generalists — they can fold laundry, clean kitchens, and sort groceries, not just execute one rehearsed skill. *Important nuance: the multi-minute extension of the post-2019 frontier is carried by partial-credit rubric scores, not binary task completion. We discuss this in detail in [Binary frontier vs. rubric frontier](#binary-frontier-vs-rubric-frontier).*
+**Phase 3: The foundation model era (2024–2025).** ALOHA Unleashed pushed binary-success multi-step manipulation to 120s in late 2024. Then π0 reported ~70% partial-credit progress on **5-minute** post-train tasks — folding towels, clearing tables, assembling boxes. π0.5 (2025) reported ~70% partial-credit progress on **12-minute** kitchen and bedroom cleaning tasks in novel homes. π0.6 achieved **97% binary success on a single-shirt fold** (200s) and ~90% partial-credit progress on espresso-making. These systems are generalists — they can fold laundry, clean kitchens, and sort groceries, not just execute one rehearsed skill. *Important nuance: the multi-minute extension of the recent frontier is carried by partial-credit rubric scores, not binary task completion. We discuss this in detail in [Binary frontier vs. rubric frontier](#binary-frontier-vs-rubric-frontier).*
 
 Notably, Mobile ALOHA's cooking shrimp demo (often cited as a breakthrough) only achieved 40% autonomous success — below our 50% threshold. Its most reliable long task was "use two-door cabinet" at 85% (~90 seconds). The viral 3-course meal demo was actually teleoperated, not autonomous. This illustrates why rigorous success rate tracking matters.
 
-### The 2019–2024 Plateau
+### Two stalls, two breakthroughs
 
-The most striking feature of the plot is the **five-year gap** between the Rubik's Cube (October 2019) and π0 (October 2024). During this period, enormous progress was made — RT-1 achieved 97% success on 700+ single-step tasks, RT-2 demonstrated emergent reasoning, and the Open X-Embodiment project aggregated 1M+ trajectories across 22 robots — but **none of these systems pushed the frontier on task horizon**.
+The frontier doesn't grow smoothly — it stalls, then jumps. Two stalls are visible in the post-2018 data:
 
-We were skeptical of this gap when we first saw it, so we did a focused literature search across 2020–2024: every major manipulation paper from CoRL, RSS, and ICRA in that window, surgical robotics (autonomous suturing, anastomosis), industrial deployments (Pickle, Symbotic, Berkshire Grey), and agricultural picking. **No paper combines a ≥240s task at ≥70% success with N≥10 trials and full autonomy** before late 2024. The closest contenders all fail one criterion: SpeedFolding gets 93% but at only ~120s/garment; Mobile ALOHA's 95%+ tasks are <60s; FurnitureBench's 900s tasks sit at 15%; YAY Robot's full-task success is 5–65%. Even surgical robotics — where individual procedures naturally run multi-minute — didn't produce a rigorous full-procedure ≥240s + ≥70% + N≥10 result before SutureBot in October 2025, which itself opens by saying *"a fully autonomous suturing pipeline had not yet been demonstrated on physical hardware"* before their work. The π0 authors are blunt about this in their own paper: *"To our knowledge, our work demonstrates the longest dexterous tasks in the end-to-end robot learning literature."*
+**The 2018–2022 single-step stall.** From Dactyl Block (10s, mid-2018) to SayCan (90s, Apr 2022), no real-world system at ≥50% pushed past ~10 seconds. During this period the field made enormous progress on other axes — RT-1 achieved 97% success on 700+ single-step tasks, RT-2 demonstrated emergent semantic reasoning, the Open X-Embodiment project aggregated 1M+ trajectories across 22 robots — but each individual task that any of these models executed was still a single pick-and-place taking ~8 seconds. 2020–2023 was the era of **scaling breadth, not depth**. (Note: "short" and "long" here refer strictly to duration — we're not making a claim that the longer tasks in this dataset are harder in any well-defined sense, only that sustaining reliable performance over longer durations is the capability we're tracking.)
 
-Why? Because 2020–2023 was the era of **scaling breadth, not depth**. The field prioritized making robots that could do many short tasks (pick X, place Y, push Z) rather than one long task reliably. Foundation models like RT-1/RT-2 could follow hundreds of instructions but each instruction was a single pick-and-place taking ~8 seconds. The equivalent in the LLM world would be if models got better at answering many types of questions but never progressed beyond one-paragraph answers. (Note: "short" and "long" here refer strictly to duration — we're not making a claim that the longer tasks in this dataset are harder in any well-defined sense, only that sustaining reliable performance over longer durations is the capability we're tracking.)
+**The 2022–2024 ~2-minute ceiling.** After SayCan / Inner Monologue / Code as Policies pushed the frontier to ~120s in 2022, the next jump didn't come for two years. We were skeptical of this when we first saw it, so we did a focused literature search across 2020–2024: every major manipulation paper from CoRL, RSS, and ICRA in that window, surgical robotics (autonomous suturing, anastomosis), industrial deployments (Pickle, Symbotic, Berkshire Grey), and agricultural picking. **No paper combines a ≥240s task at ≥70% success with N≥10 trials and full autonomy** before late 2024. The closest contenders all fail one criterion: SpeedFolding gets 93% but at only ~120s/garment; Mobile ALOHA's 95%+ tasks are <60s; FurnitureBench's 900s tasks sit at 15%; YAY Robot's full-task success is 5–65%. Even surgical robotics — where individual procedures naturally run multi-minute — didn't produce a rigorous full-procedure ≥240s + ≥70% + N≥10 result before SutureBot in October 2025, which itself opens by saying *"a fully autonomous suturing pipeline had not yet been demonstrated on physical hardware"* before their work. The π0 authors are blunt about this in their own paper: *"To our knowledge, our work demonstrates the longest dexterous tasks in the end-to-end robot learning literature."*
 
-This breadth-first strategy was arguably necessary — you need reliable primitives before you can chain them into long tasks. But it means the task-horizon metric was flat for five years even as the field was making rapid progress on other axes.
+Each stall ended when a new architecture arrived: LLM-as-planner in 2022 (chaining primitives without learning the full sequence end-to-end), and VLA foundation models in 2024 (learning the full sequence end-to-end at scale). Both stalls in retrospect look like the field needing the right substrate to push past the previous limit, not a lack of effort during the gap.
 
 ### Robot vs. LLM Agent Comparison
 
@@ -125,8 +125,8 @@ This breadth-first strategy was arguably necessary — you need reliable primiti
 
 The comparison reveals:
 - **LLM agents are an order of magnitude ahead** on task horizon: METR's stated anchor is Claude 3.7 Sonnet at ~60 minutes (Feb 2025), against ~10 minutes for the robotic manipulation frontier in the same window
-- **Robot manipulation is growing more slowly** — the overall doubling time is **~14.1 months** (95% CI: 6.6–20.7 months) vs. METR's ~7 months for LLM agents, making it roughly **2.0x slower**
-- The robotics curve is **more stepped** than the LLM curve — progress comes in discrete jumps when new paradigms emerge (dexterous RL → foundation models), rather than the smooth exponential of LLM scaling
+- **Robot manipulation is growing more slowly** — the overall doubling time is **~14.7 months** (95% CI: 11.9–18.0 months) vs. METR's ~7 months for LLM agents, making it roughly **2.1x slower**
+- The robotics curve is **more stepped** than the LLM curve — progress comes in discrete jumps when new paradigms emerge (LLM planners → foundation models), rather than the smooth exponential of LLM scaling
 
 We avoid hand-eyeballing per-model points for METR's curve (an earlier draft did this and the values didn't match METR's published numbers). Instead the LLM line is anchored on the one quantitative value METR explicitly states in their March 2025 post — Claude 3.7 Sonnet at ~60 minutes — and projected with their reported 7-month doubling.
 
@@ -138,8 +138,8 @@ The gap makes intuitive sense: LLM agents operate in the digital world where exe
 *Figure 3: Tabletop manipulation (left) vs. mobile manipulation (right). Mobile manipulation shows steeper recent growth.*
 
 The split reveals different dynamics:
-- **Tabletop manipulation** has a longer history and a more gradual frontier, with the Rubik's Cube as an isolated 240s point that wasn't matched by any other real-world system for five years
-- **Mobile manipulation** is newer (first frontier point in 2022) but is on a similar exponential — doubling time ~14 months — driven by the recent wave of Mobile ALOHA and π0.x systems
+- **Tabletop manipulation** has a longer history and a more gradual frontier, anchored on early grasping benchmarks (Levine, Dex-Net, QT-Opt) and Dactyl Block before LLM planners and foundation models arrived
+- **Mobile manipulation** is newer (first frontier point in 2022) but is on a similar exponential — doubling time ~19 months — driven by the recent wave of SayCan, Mobile ALOHA, and π0.x systems
 - When combined, the story is cleaner than when separated — the overall frontier is what matters most
 
 ### Sensitivity to Success Threshold
@@ -147,7 +147,7 @@ The split reveals different dynamics:
 ![Sensitivity Analysis](../figures/sensitivity_thresholds.png)
 *Figure 4: How the frontier changes at different success rate thresholds (50%, 70%, 80%, 90%, 95%).*
 
-At ≥50% the frontier shows the Dactyl Rubik's plateau (60% success holds the curve from 2019 to 2024). At ≥70% Dactyl drops out and intermediate-era systems (Diffusion Policy, Mobile ALOHA, ALOHA Unleashed) fill in, smoothing the curve. At ≥80–95% the frontier is the cleanest fit (R² ≈ 0.95), running through ALOHA Unleashed, Gemini Robotics' lunch-box, and π0.6's single-shirt fold. The ≥30–60% thresholds yield the same frontier as ≥50% in our data — no real-world system in the 30–49% bracket extends the envelope past the ≥50% curve. (The would-be ≥30% additions — IKEA Furniture Assembly, RoboCerebra, VLABench — are all sim-only.)
+At ≥50% (the canonical threshold) the frontier traces early grasping → Dactyl Block → SayCan / Inner Monologue / Code as Policies → ALOHA Unleashed → π0 → π0.5. At ≥70% the frontier loses SayCan and Code as Policies (both below 70%) but the overall shape is similar. At ≥80–95% the frontier is the cleanest fit (R² ≈ 0.95), running through ALOHA Unleashed's gear-insertion, Gemini Robotics' lunch-box, and π0.6's single-shirt fold. The ≥30–60% thresholds yield the same frontier as ≥50% in our data — no real-world system in the 30–49% bracket extends the envelope past the ≥50% curve. (The would-be ≥30% additions — IKEA Furniture Assembly, RoboCerebra, VLABench — are all sim-only.)
 
 ## Quantitative Analysis
 
@@ -157,43 +157,23 @@ We fit a log-linear exponential model to the frontier — i.e., we regress log(t
 
 | Scope | Doubling Time | R² | N |
 |---|---|---|---|
-| All categories combined (real-world, ≥50%) | **14.1 months** (95% CI: 6.6–20.7) | 0.78 | 7 |
-| Tabletop only | 14.4 months | 0.67 | 6 |
-| Mobile manipulation only | 11.7 months | 0.99 | 3 |
+| All categories combined (real-world, ≥50%) | **14.7 months** (95% CI: 11.9–18.0) | 0.93 | 10 |
+| Tabletop only | 16.0 months | 0.92 | 7 |
+| Mobile manipulation only | 18.8 months | 0.54 | 4 |
 
-The overall doubling time of ~14.1 months places robot manipulation between METR's findings for LLM agents (~7 months) and self-driving (~20 months for Tesla FSD), but closer to self-driving. The mobile-only fit is fast (11.7 months) but rests on only 3 frontier points, so the CI is wide.
+The overall doubling time of ~14.7 months places robot manipulation between METR's findings for LLM agents (~7 months) and self-driving (~20 months for Tesla FSD), but closer to self-driving. The mobile-only fit is much noisier (R² 0.54 on 4 points), so we don't read much into the per-category split.
 
-**A note on the confidence interval.** The reported 95% CI of 6.6–20.7 months comes from bootstrap resampling of the 7 frontier points. Three of those points sit at 4s (Levine, Dex-Net, QT-Opt), so many bootstrap resamples are degenerate (the regression flags a `RankWarning` on a non-trivial fraction of draws). The point estimate is stable across alternative framings — ≥80% gives 20.0 months, ≥95% gives 15.4 months, ≥70% gives 16.8 months — but the CI here should be read as "the rate is consistent with everything from roughly half a year to two years," not as a tight uncertainty bound. With only 7 frontier points spread over a decade, that is genuinely the best we can say.
-
-### The Dactyl Rubik's Cube: Outlier Analysis
-
-The R² of 0.83 hides a critical structural issue. The Dactyl Rubik's Cube result (240s, **60% success**, October 2019) dominates the ≥50% frontier for five years: no other real-world system exceeds 240 seconds at ≥50% success until Pi0 in late 2024. This creates an artificial plateau that degrades the fit.
-
-Two alternative framings expose this:
-
-| Scenario | Doubling Time | R² | N | Key difference |
-|---|---|---|---|---|
-| Real, ≥50% (canonical) | 14.1 months | 0.78 | 7 | Dactyl holds frontier 2019–2024 |
-| **Real, ≥80% (high reliability)** | **20.0 months** | **0.95** | **11** | Dactyl excluded; 2024–25 binary tasks fill in |
-| Real, ≥70% | 16.8 months | 0.86 | 10 | First threshold where Dactyl drops out |
-| Real, ≥95% (very high reliability) | 15.4 months | 0.82 | 8 | Modern era only |
-| Sensitivity: ≥50% incl. sim | 15.2 months | 0.82 | 6 | Adding sim doesn't change story |
-
-The headline finding: **the doubling time is in a 14–20 month band** depending on framing. The R² jumps once we move above the ≥50% threshold — from R² = 0.78 (with Dactyl holding the frontier) to R² ≥ 0.86 (Dactyl excluded). At ≥80%, the doubling appears slower (20.0 months) but the fit is much cleaner: the field shows steadier growth on the high-reliability frontier than the ≥50% view suggests.
-
-The ≥80% scenario is the most revealing. Without Dactyl's shadow, a different set of real-world systems appears as the frontier: Diffusion Policy (88% success, 45s, Feb 2023), ACT/ALOHA (85%, 120s, Mar 2023), and Pi0.6 (97%, 600s, Nov 2025) join the early grasping systems (Levine, Dex-Net, QT-Opt, Dactyl Block) on a near-straight log-linear progression.
-
-The conclusion: **Dactyl Rubik's Cube was ahead of its time.** It was a task-specific achievement built on massive simulation compute and domain randomization — genuinely remarkable, but not on the general capability trajectory the rest of the field was following. At ≥80% reliability, the field was advancing at a remarkably steady pace throughout 2019–2024. Dactyl's result masked that progress in the ≥50% view by setting a 4-minute bar that took general-purpose systems five years to match.
+The point estimate is stable across alternative framings: ≥80% gives 20.0 months (R² 0.95, N=9), ≥95% gives 15.4 months, ≥70% gives 16.8 months. Including sim systems alongside real ones gives the same 14.7 months / R² 0.93. The headline finding: **the doubling time is in a 14–20 month band** depending on threshold, with the high-reliability ≥80% frontier giving the cleanest fit. At ≥80%, the frontier runs through Dactyl Block, Diffusion Policy (88% / 45s, Feb 2023), ACT/ALOHA (85% / 120s, Mar 2023), ALOHA Unleashed's gear-insertion (95% / 80s, Oct 2024), Gemini Robotics' lunch-box (100% / 120s, Mar 2025), and π0.6 (97% / 200s, Nov 2025) — a near-straight log-linear progression.
 
 ### Binary frontier vs. rubric frontier
 
-A second structural issue surfaced in our methodology audit. Modern long-horizon manipulation papers — π0, π0.5, GR00T N1, Gemini Robotics 1.5 — report **partial-credit rubric scores** rather than binary task success. A 0.7 rubric score on a 5-point laundry rubric is not the same as 70% binary task completion: it averages partial successes (e.g., the robot fully folded 3 of 5 items in a typical episode) and can be high even when *no* episode fully succeeded.
+A structural issue surfaced in our methodology audit: modern long-horizon manipulation papers — π0, π0.5, GR00T N1, Gemini Robotics 1.5 — report **partial-credit rubric scores** rather than binary task success. A 0.7 rubric score on a 5-point laundry rubric is not the same as 70% binary task completion: it averages partial successes (e.g., the robot fully folded 3 of 5 items in a typical episode) and can be high even when *no* episode fully succeeded.
 
 We track this distinction explicitly via the `success_type` column. The implication for the frontier curve:
 
-- The **post-2019 ≥50% frontier extension is carried by rubric scores, not binary success.** π0's 5-min laundry folding (rubric ~0.7) and π0.5's 12-min bedroom cleanup (rubric ~0.7) are the rows that push the curve past Dactyl's 240s.
-- If we restricted the frontier to **binary success only**, the curve would *cap at 240s through 2025*. The highest-confidence binary post-2019 result is π0.6's single-shirt fold at 200s / 97% — *below* the Dactyl Rubik's anchor.
-- The **≥80% binary frontier** is more informative: it shows steady progress through ALOHA Unleashed (gear insertion 95% / 80s, Oct 2024), Gemini Robotics (lunch-box pack 100% / 120s, Mar 2025), and π0.6 (single-shirt fold 97% / 200s, Nov 2025).
+- The **post-2024 ≥50% frontier extension is carried by rubric scores, not binary success.** π0's 5-min laundry folding (rubric ~0.7) and π0.5's 12-min bedroom cleanup (rubric ~0.7) are the rows that push the curve past 200s.
+- If we restricted the frontier to **binary success only**, the longest reliable point through 2025 is π0.6's single-shirt fold at 200s / 97% (Nov 2025).
+- The **≥80% binary frontier** shows steady progress without the rubric extension: ALOHA Unleashed (gear insertion 95% / 80s, Oct 2024), Gemini Robotics (lunch-box pack 100% / 120s, Mar 2025), and π0.6 (single-shirt fold 97% / 200s, Nov 2025).
 
 This means the field's recent narrative ("we can do 10-minute household tasks") rests primarily on partial-credit rubrics, not full task completion. Both are progress, but they measure different things.
 
@@ -204,16 +184,16 @@ This means the field's recent narrative ("we can do 10-minute household tasks") 
 | LLM agents (software/reasoning) | ~7 months | METR |
 | LLM agents (recent, 2024–25) | ~4 months | METR |
 | Web browsing (WebArena/OSWorld) | ~7 months | METR |
-| **Robot manipulation (this work)** | **~15.2 months** | **This analysis** |
+| **Robot manipulation (this work)** | **~14.7 months** | **This analysis** |
 | Self-driving (Tesla FSD) | ~20 months | METR |
 
-Robot manipulation is the second-slowest domain — roughly 2.2x slower than LLM agents but modestly faster than self-driving. This likely reflects the compounded difficulty of the physical-world feedback loop: every iteration requires real hardware, real sensor data, and real actuation, making the cycle time for improvement fundamentally longer than in purely digital domains.
+Robot manipulation is the second-slowest domain — roughly 2.1x slower than LLM agents but modestly faster than self-driving. This likely reflects the compounded difficulty of the physical-world feedback loop: every iteration requires real hardware, real sensor data, and real actuation, making the cycle time for improvement fundamentally longer than in purely digital domains.
 
 ## What's Driving the Recent Acceleration?
 
 The jump from 2024 onward is driven by three converging trends:
 
-1. **Vision-Language-Action (VLA) models.** π0 and its successors combine internet-scale vision-language pretraining with robot action prediction, enabling zero-shot generalization to new tasks and environments.
+1. **Vision-Language-Action (VLA) models.** π0 and its successors combine internet-scale vision-language pretraining with robot action prediction, enabling end-to-end learning of long sequences and zero-shot generalization to new tasks and environments. This is the substrate that broke the 2022–2024 ~2-minute ceiling.
 
 2. **Co-training across embodiments.** Training on data from multiple robot types (the Open X-Embodiment insight) produces more robust policies that handle the variability of real-world tasks.
 
@@ -231,7 +211,7 @@ Several parallel efforts inform this analysis:
 
 ## Limitations
 
-1. **Small frontier sample size.** The canonical frontier has 7 points spanning ~10 years. The exponential fit is suggestive but not definitive — the bootstrap CI (6.6–20.7 months) reflects the small N.
+1. **Small frontier sample size.** The canonical frontier has 10 points spanning ~10 years. The exponential fit is suggestive but not definitive — the bootstrap CI (11.9–18.0 months) reflects the small N.
 
 2. **Heterogeneous evaluations.** Unlike METR, we cannot evaluate all systems on identical tasks. Hardware, evaluation protocols, and success criteria differ across every data point.
 
@@ -239,13 +219,11 @@ Several parallel efforts inform this analysis:
 
 4. **Selection bias.** We may be missing systems that pushed the frontier but weren't widely cited or didn't report success rates.
 
-5. **The Rubik's Cube is an outlier.** Dactyl's Rubik's Cube solve is a unique single-task achievement that required massive compute and a custom setup. Excluding it improves R² from 0.83 to 0.97, but barely changes the doubling time estimate (15.2 → 14.3 months) — the outlier affects fit quality far more than the rate itself. We report all three scenarios (≥50%, ≥80%, ≥50% without Dactyl) in the quantitative analysis.
-
-6. **"Task horizon" ≠ "useful work."** As critics of METR's approach have noted, a 15-minute task horizon doesn't mean robots can replace 15 minutes of human work. Real tasks involve variability, error recovery, and context that benchmarks don't capture.
+5. **"Task horizon" ≠ "useful work."** As critics of METR's approach have noted, a 15-minute task horizon doesn't mean robots can replace 15 minutes of human work. Real tasks involve variability, error recovery, and context that benchmarks don't capture.
 
 ## Conclusion
 
-The task horizon for robotic manipulation is growing — roughly doubling every 14 months at ≥50% reliability, every 20 months at ≥80%. But the growth is uneven, with a notable five-year plateau from 2019–2024 when the field prioritized breadth over depth. The foundation model era (2024–present) has broken through this plateau, with generalist policies now reporting partial progress on 10–15 minute household tasks. The honest framing: by binary task-completion, robots are reliably doing 2-minute tasks; by partial-credit rubric, the field is at 10–15 minutes. Both are real progress, and both are how the field measures itself.
+The task horizon for robotic manipulation is growing — roughly doubling every 15 months at ≥50% reliability, every 20 months at ≥80%. But the growth is uneven: two multi-year stalls (sub-15-second tasks through 2018–2022, ~2-minute tasks through 2022–2024) gave way to step-function jumps when new architectures arrived (LLM planners in 2022, VLA foundation models in 2024). The foundation model era has now extended generalist policies to partial progress on 10–15 minute household tasks. The honest framing: by binary task-completion, robots are reliably doing ~3-minute tasks; by partial-credit rubric, the field is at 10–15 minutes. Both are real progress, and both are how the field measures itself.
 
 If the current exponential holds, we might expect robots to reliably complete **1-hour household tasks by ~2028** and **multi-hour complex tasks by ~2030**. But the history of this field suggests that progress comes in steps, not smooth curves — the next paradigm shift matters more than the trend line.
 

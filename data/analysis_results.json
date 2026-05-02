@@ -1,53 +1,112 @@
 {
+  "frontier_definition": "real-world systems, success_rate >= 50%",
   "overall": {
-    "growth_rate_per_year": 0.5070797463285467,
-    "intercept": 2.7324669859442636,
-    "doubling_time_months": 16.403270347402326,
-    "doubling_time_years": 1.3669391956168606,
-    "r_squared": 0.8425003281679254,
+    "growth_rate_per_year": 0.5669018559177559,
+    "intercept": 1.1373798994860378,
+    "doubling_time_months": 14.672321284349536,
+    "doubling_time_years": 1.2226934403624614,
+    "r_squared": 0.9282536980392597,
     "growth_rate_95ci": [
-      0.2848007445674905,
-      0.6028772923255479
+      0.46247355048285194,
+      0.6991954228891785
     ],
     "doubling_time_95ci_months": [
-      13.796781322836473,
-      29.205563276707814
+      11.896196534509778,
+      17.985387830363628
     ],
-    "n_points": 8
+    "n_points": 10
   },
   "by_category": {
     "tabletop": {
-      "growth_rate_per_year": 0.505067886478995,
-      "intercept": 2.7425768841365015,
-      "doubling_time_months": 16.468610239121325,
-      "doubling_time_years": 1.3723841865934436,
-      "r_squared": 0.7691680185498879,
+      "growth_rate_per_year": 0.519578404850608,
+      "intercept": 1.288628924183823,
+      "doubling_time_months": 16.00868336533523,
+      "doubling_time_years": 1.3340569471112693,
+      "r_squared": 0.9226247621785612,
       "growth_rate_95ci": [
-        0.28443351382874765,
-        1.1301490534442489
+        0.39889452775650447,
+        0.6836124760200317
       ],
       "doubling_time_95ci_months": [
-        7.359884204096859,
-        29.243270438684387
+        12.167370342836765,
+        20.852043805917344
       ],
-      "n_points": 6
+      "n_points": 7
     },
     "mobile_manipulation": {
-      "growth_rate_per_year": 0.5944045214991319,
-      "intercept": 0.9005030997276008,
-      "doubling_time_months": 13.993443632866933,
-      "doubling_time_years": 1.166120302738911,
-      "r_squared": 0.8521045075972045,
+      "growth_rate_per_year": 0.44356549409201623,
+      "intercept": 3.30793333609041,
+      "doubling_time_months": 18.752058664405148,
+      "doubling_time_years": 1.5626715553670956,
+      "r_squared": 0.5345383133684714,
       "growth_rate_95ci": [
-        0.09588133197245564,
-        0.7857388634589779
+        -1.0425718643802274e-15,
+        13.025094732454042
       ],
       "doubling_time_95ci_months": [
-        10.585916712968595,
-        86.7506322201368
+        0.6385954449908406,
+        Infinity
       ],
-      "n_points": 6
+      "n_points": 4
     }
   },
-  "generated_at": "2026-04-09T03:34:16.634332"
+  "sim_sensitivity": {
+    "real_only": {
+      "growth_rate_per_year": 0.5669018559177559,
+      "intercept": 1.1373798994860378,
+      "doubling_time_months": 14.672321284349536,
+      "doubling_time_years": 1.2226934403624614,
+      "r_squared": 0.9282536980392597,
+      "growth_rate_95ci": [
+        0.46247355048285194,
+        0.6991954228891785
+      ],
+      "doubling_time_95ci_months": [
+        11.896196534509778,
+        17.985387830363628
+      ],
+      "n_points": 10,
+      "frontier_systems": [
+        "Levine et al. Grasping",
+        "Dex-Net 2.0/4.0",
+        "QT-Opt",
+        "OpenAI Dactyl - Block",
+        "SayCan",
+        "Inner Monologue",
+        "Code as Policies",
+        "ALOHA Unleashed - Hang Shirt",
+        "\u03c00 (laundry folding)",
+        "\u03c00.5 (bedroom cleanup)"
+      ]
+    },
+    "sim_and_real": {
+      "growth_rate_per_year": 0.5669018559177559,
+      "intercept": 1.1373798994860378,
+      "doubling_time_months": 14.672321284349536,
+      "doubling_time_years": 1.2226934403624614,
+      "r_squared": 0.9282536980392597,
+      "growth_rate_95ci": [
+        0.46247355048285194,
+        0.6991954228891785
+      ],
+      "doubling_time_95ci_months": [
+        11.896196534509778,
+        17.985387830363628
+      ],
+      "n_points": 10,
+      "frontier_systems": [
+        "Levine et al. Grasping",
+        "Dex-Net 2.0/4.0",
+        "QT-Opt",
+        "OpenAI Dactyl - Block",
+        "SayCan",
+        "Inner Monologue",
+        "Code as Policies",
+        "ALOHA Unleashed - Hang Shirt",
+        "\u03c00 (laundry folding)",
+        "\u03c00.5 (bedroom cleanup)"
+      ]
+    }
+  },
+  "generated_at": "2026-05-02T11:43:18.304400"
 }
