@@ -4,26 +4,31 @@ Scatter plot of all (task duration, success rate) data points, colored by year.
 No model fitting — shows the raw data distribution and how it shifts over time.
 """
 
+import warnings
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import matplotlib.lines as mlines
 import os
 
 DATA_PATH = os.path.join(os.path.dirname(__file__), '..', 'data', 'manipulation_horizons.csv')
 FIGURES_DIR = os.path.join(os.path.dirname(__file__), '..', 'figures')
 
+# Notable systems to label, keyed on the exact `system_name` from the CSV.
 # (label_text, x_nudge_factor, y_nudge)
+# A warning is emitted if any key here is missing from the CSV — keeps the figure
+# from silently dropping labels after dataset renames.
 FRONTIER_LABELS = {
-    'Levine et al. Grasping':        ('Levine (2016)',        1.15, -7.0),
-    'OpenAI Dactyl - Block':         ('Dactyl Block (2018)',  1.12,  2.0),
+    'Levine et al. Grasping':        ('Levine (2016)',         1.15, -7.0),
+    'OpenAI Dactyl - Block':         ('Dactyl Block (2018)',   1.12,  2.0),
     "OpenAI Dactyl - Rubik's Cube":  ("Dactyl Rubik's (2019)", 1.10, -7.0),
-    'SayCan':                        ('SayCan (2022)',        1.12,  2.0),
-    'ACT / ALOHA':                   ('ACT/ALOHA (2023)',     1.10,  2.0),
-    'Mobile ALOHA':                  ('Mobile ALOHA (2024)', 1.10, -7.5),
-    'Pi0':                           ('π0 (2024)',            1.12,  2.0),
-    'Pi0.5':                         ('π0.5 (2025)',          1.10, -7.0),
-    'Pi0.6':                         ('π0.6 (2025)',          1.10,  2.0),
+    'SayCan':                        ('SayCan (2022)',         1.12,  2.0),
+    'ACT / ALOHA':                   ('ACT/ALOHA (2023)',      1.10,  2.0),
+    'Mobile ALOHA':                  ('Mobile ALOHA (2024)',   1.10, -7.5),
+    'π0 (laundry folding)':          ('π0 (2024)',             1.12,  2.0),
+    'π0.5 (bedroom cleanup)':        ('π0.5 (2025)',           1.10, -7.0),
+    'π0.6 (single-shirt fold)':      ('π0.6 (2025)',           1.10,  2.0),
 }
 
 
@@ -32,9 +37,8 @@ def plot_scatter():
     df['date'] = pd.to_datetime(df['date'])
     df['year'] = df['date'].dt.year
 
-    # Exclude teleoperated/non-autonomous rows
+    # Exclude teleoperated/non-autonomous rows (recorded with success_rate=0)
     df = df[df['success_rate'] > 0].copy()
-    df = df[df['system_name'] != 'Mobile ALOHA Cooking (Teleop)'].copy()
 
     year_min, year_max = df['year'].min(), df['year'].max()
     cmap = plt.cm.plasma
@@ -62,6 +66,13 @@ def plot_scatter():
     )
 
     # Frontier systems: larger markers + labels
+    missing = [n for n in FRONTIER_LABELS if (df['system_name'] == n).sum() == 0]
+    if missing:
+        warnings.warn(
+            f"FRONTIER_LABELS keys not found in CSV (label dropped silently otherwise): {missing}",
+            stacklevel=2,
+        )
+
     for name, (label, xf, dy) in FRONTIER_LABELS.items():
         row = df[df['system_name'] == name]
         if len(row) == 0:
@@ -103,7 +114,6 @@ def plot_scatter():
     )
 
     # Proxy artists so the legend shows marker style, not colormap colors
-    import matplotlib.lines as mlines
     legend_real = mlines.Line2D([], [], color='gray', marker='o', linestyle='None',
                                 markersize=7, label='Real-world')
     legend_sim = mlines.Line2D([], [], color='gray', marker='o', linestyle='None',
