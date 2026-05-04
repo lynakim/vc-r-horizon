@@ -146,3 +146,52 @@ Failed in Round 2: GR-3 (N<10 long-horizon), Manual2Skill (humans do insertion s
 CSV is now 52 rows (44 real + 8 sim). Frontier composition and 14.1-month doubling time unchanged.
 
 ---
+
+## Entry 5 — Explored METR-style per-paper logistic fits, decided not to adopt (2026-05-04)
+
+**Context:** METR's main figure puts each *model* at one (date, horizon) point, where the horizon is read off a logistic regression of `success ~ log(human_time)` fit across all the tasks that model was evaluated on. We considered doing the same per *paper* in our dataset — the natural analog given that "model" maps loosely to "paper" in robot learning. Five papers had multi-task tables that looked plausibly fit-able: ALOHA Unleashed, Mobile ALOHA, Gemini Robotics (specialist), π0.6, and FurnitureBench.
+
+**What we built:** `data/per_task_evaluations.csv` (29 rows across 4 of the 5 candidates — FurnitureBench dropped because its multi-task structure is at the per-skill level with no duration spread) and `scripts/plot_logistic_horizons.py` (per-paper MLE logistic fit with binomial likelihood, continuous-scoring approximation for rubric rows à la METR Appendix H, within-paper bootstrap CI on the horizon, and a side-by-side comparison plot vs. the existing CSV points).
+
+**Result:** Only one of four fits is usable.
+
+| Paper | N tasks | β | 70% horizon | 95% CI |
+|---|---|---|---|---|
+| ALOHA Unleashed | 11 | −0.90 | 46s | 7.6–86s |
+| Mobile ALOHA | 7 | −1.00 | 84s | 45–4,883s |
+| π0.6 | 5 | −0.89 | 991s | 559–228,000s |
+| Gemini Robotics specialist | 6 | ≈0 | non-monotonic | — |
+
+ALOHA Unleashed is clean. The other three either have a single noisy row dragging the CI by orders of magnitude (Mobile ALOHA's Cook Shrimp at N=5; π0.6's diverse laundry sitting right at threshold) or violate the model's monotonicity assumption outright (Gemini Robotics — lunch-box at 120s scores 100%, origami at 60s scores 45%; longer ≠ harder when the lab curates a dataset per task).
+
+**Why this method doesn't pay off in our domain:** METR's logistic fit works because HCAST tasks are explicitly drawn from a continuum of human-baseline times — varying duration *is* the experimental design. Robot manipulation papers don't work that way. They evaluate at one or two task durations and vary difficulty along non-duration axes: state randomness (FurnitureBench), language complexity (Gemini Robotics), object diversity (π0.6). The structural assumption "rate falls monotonically with task length within a paper" is not what most of these papers are testing. Forcing a logistic on top of that structure injects more noise than it removes.
+
+**Decision:** Not adopting. Keep the per-system scatter + step-function frontier + exponential fit as the primary plot.
+
+**Artifacts moved to archive (2026-05-04):**
+- `archive/scripts/plot_logistic_horizons.py`
+- `archive/figures/logistic_horizon_test.png`, `archive/figures/logistic_per_paper_curves.png`
+
+`data/per_task_evaluations.csv` is kept in `data/` — it's a clean per-task evaluation table that may be useful for analyses other than logistic fitting.
+
+If we ever want to revisit this, the place to start is dropping non-monotonic papers from the fit and adding per-task human-time baselines (rather than `defended_estimate`) for the 4–5 papers that do have genuine duration variance.
+
+---
+
+## Entry 6 — The binary vs. mixed frontier divergence is a recent phenomenon (2026-05-04)
+
+**What:** When we plot the binary-only frontier (`success_type=binary` rows) against the mixed canonical frontier (binary + rubric, all `success_rate ≥ 50`) on the same axes, the two curves are essentially identical until 2019, then split — sharply. The split is driven by exactly three rubric points: Dactyl Rubik's (240s, 60% half-success, Oct 2019), π0 laundry folding (300s, 70% rubric, Oct 2024), and π0.5 bedroom cleanup (720s, 70% rubric, Apr 2025). Removing those three points puts the entire post-2018 frontier on a smooth log-linear progression from 10s (Dactyl Block, Jul 2018) → 200s (π0.6 single-shirt fold, Nov 2025), with no plateau. The binary-only doubling is 17.8 months at R² = 0.91; the mixed doubling is 14.1 months at R² = 0.78.
+
+In other words, the divergence is concentrated entirely in the foundation-model era. The pre-2019 era reports binary outcomes because the tasks were short enough for binary to make sense. The 2024+ generalist VLAs (π0, π0.5, π0.6, GR00T N1, Gemini Robotics 1.5) report rubric scores because their target tasks — full-laundry-basket, kitchen cleanup, espresso making — are complex enough that an all-or-nothing binary metric would be too noisy to optimize against. Dactyl Rubik's is an early outlier of the same pattern: a 4-minute task that's hard to score binary, so the headline became a partial-completion threshold.
+
+**Three things this means:**
+
+1. **The recent rubric run is real but ambiguous progress.** π0.5 reporting 70% rubric on bedroom cleanup is genuinely capability the field didn't have in 2022. But it is not interchangeable with "70% of trials fully succeed at bedroom cleanup," which is what the chart axis nominally implies. The binary frontier at the same date sits at 200s, not 720s — 3.6× shorter. Both numbers are correct; they measure different things.
+
+2. **The field needs a consistent scoring convention.** Every long-horizon paper currently picks its own rubric structure: 5-point laundry, 7-point box assembly, 8-point dishes-in-sink. These rubrics are not comparable across papers, and they are not directly comparable to binary success either. Anyone repeating this analysis in 12 months will face the same problem we did, multiplied by however many new generalist papers ship. The clean fix is community-level: a shared definition of "fully completed" for canonical long-horizon tasks (one folded basket, one clean kitchen, one made bed). Until that exists, any longitudinal horizon analysis has to either pick one metric and accept it, or carry both — we picked the latter, but it cost us a `success_type` column, an extra plot, and several paragraphs of explanation.
+
+3. **Task length is one capability axis, not *the* capability axis.** The horizon metric captures temporal extension — how long the robot can sustain a coherent task. It does not capture: generalization to unseen objects, robustness to novel environments, in-hand dexterity, recovery from errors, or speed relative to humans. A robot that does one 12-minute task at 70% rubric in a curated lab is not strictly more capable than one that does 30-second tasks at 95% binary in 100 unseen kitchens — those are different kinds of progress. The blog post is explicit about this ("we treat task duration as an independently useful feature, not as a proxy for task difficulty"), and the framing should stay prominent as foundation-model results continue to pile up at long durations on increasingly narrow task definitions.
+
+**Files:** new `figures/binary_vs_mixed_frontier.png` plotting both curves on shared axes with all real-world systems as background scatter (binary = filled gray circles, rubric = open gray diamonds). The visual divergence makes the story land harder than the numbers do.
+
+---

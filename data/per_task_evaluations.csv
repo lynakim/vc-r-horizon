@@ -1,0 +1,30 @@
+paper_id,paper_date,paper_url,task_name,success_rate,num_trials,human_time_seconds,scoring_type,human_time_source,notes
+aloha_unleashed,2024-10-13,https://arxiv.org/abs/2410.13126,ShirtEasy,75,20,60,binary,defended_estimate,Paper Tab. 1; 80s timeout but easier variant — human time ~60s
+aloha_unleashed,2024-10-13,https://arxiv.org/abs/2410.13126,ShirtMessy,70,20,120,binary,published_baseline,Paper Tab. 1; 120s timeout
+aloha_unleashed,2024-10-13,https://arxiv.org/abs/2410.13126,LaceEasy,70,20,80,binary,published_baseline,Paper Tab. 1; 80s timeout
+aloha_unleashed,2024-10-13,https://arxiv.org/abs/2410.13126,LaceMessy,40,20,100,binary,defended_estimate,Paper Tab. 1; harder lace state ~100s human
+aloha_unleashed,2024-10-13,https://arxiv.org/abs/2410.13126,FingerReplace,75,20,80,binary,published_baseline,Paper Tab. 1; 80s timeout
+aloha_unleashed,2024-10-13,https://arxiv.org/abs/2410.13126,GearInsert-1,95,20,25,rubric,defended_estimate,Paper Tab. 1; partial credit 1 of 3 gears (~25s human)
+aloha_unleashed,2024-10-13,https://arxiv.org/abs/2410.13126,GearInsert-2,75,20,50,rubric,defended_estimate,Paper Tab. 1; partial credit 2 of 3 gears (~50s human)
+aloha_unleashed,2024-10-13,https://arxiv.org/abs/2410.13126,GearInsert-3,40,20,80,binary,published_baseline,Paper Tab. 1; all 3 gears (80s timeout)
+aloha_unleashed,2024-10-13,https://arxiv.org/abs/2410.13126,RandomKitchen-Bowl,95,20,15,rubric,defended_estimate,Paper Tab. 1; bowl only (~15s human)
+aloha_unleashed,2024-10-13,https://arxiv.org/abs/2410.13126,RandomKitchen-BowlCup,65,20,30,rubric,defended_estimate,Paper Tab. 1; bowl + cup (~30s human)
+aloha_unleashed,2024-10-13,https://arxiv.org/abs/2410.13126,RandomKitchen-BowlCupFork,25,20,50,binary,defended_estimate,Paper Tab. 1; all 3 items (~50s human)
+mobile_aloha,2024-01-04,https://arxiv.org/abs/2401.02117,WipeWine,95,20,26,binary,published_baseline,Paper §VI; 26s/demo stated explicitly
+mobile_aloha,2024-01-04,https://arxiv.org/abs/2401.02117,UseCabinet,85,20,30,binary,defended_estimate,Paper Tab. 1; ~30s estimate
+mobile_aloha,2024-01-04,https://arxiv.org/abs/2401.02117,CallElevator,95,20,45,binary,defended_estimate,Paper Tab. 1; full task ~45s
+mobile_aloha,2024-01-04,https://arxiv.org/abs/2401.02117,HighFive,85,20,40,binary,defended_estimate,Paper Tab. 1; ~40s estimate
+mobile_aloha,2024-01-04,https://arxiv.org/abs/2401.02117,PushChairs,80,20,40,binary,defended_estimate,Paper Tab. 1; 5 chairs ~40s
+mobile_aloha,2024-01-04,https://arxiv.org/abs/2401.02117,RinsePan,80,20,22,binary,defended_estimate,Paper Tab. 1; ~22s
+mobile_aloha,2024-01-04,https://arxiv.org/abs/2401.02117,CookShrimp,40,5,75,binary,published_baseline,Paper §VI; 75s long-horizon stated; only N=5
+gemini_robotics,2025-03-12,https://arxiv.org/abs/2503.20020,ScoopNuts,100,20,20,binary,defended_estimate,Paper Fig. 23; specialist; ~20s
+gemini_robotics,2025-03-12,https://arxiv.org/abs/2503.20020,LunchBox,100,20,120,binary,published_baseline,Paper §4.1; over 2 minutes stated
+gemini_robotics,2025-03-12,https://arxiv.org/abs/2503.20020,PlayingCards,90,20,30,binary,defended_estimate,Paper Fig. 23; specialist; multi-step card task ~30s
+gemini_robotics,2025-03-12,https://arxiv.org/abs/2503.20020,SpellingGame,83,12,60,binary,defended_estimate,Paper Fig. 23; specialist; alphabet tile arrangement ~60s
+gemini_robotics,2025-03-12,https://arxiv.org/abs/2503.20020,SnapPeas,55,20,30,binary,defended_estimate,Paper Fig. 23; specialist; tongs use ~30s
+gemini_robotics,2025-03-12,https://arxiv.org/abs/2503.20020,Origami,45,20,60,binary,defended_estimate,Paper Fig. 23; specialist; first fold ~60s
+pi0_6,2025-11-17,https://arxiv.org/abs/2511.14759,SingleShirtStrict,97,50,200,binary,published_baseline,Paper §VI-C-1; failure-mode ablation; 200s timeout
+pi0_6,2025-11-17,https://arxiv.org/abs/2511.14759,SimpleLaundry,95,100,200,rubric,defended_estimate,Paper §VI-A; t-shirts+shorts; 90%+ from Fig 8
+pi0_6,2025-11-17,https://arxiv.org/abs/2511.14759,DiverseLaundry,75,450,500,rubric,published_baseline,Paper §VI-A Fig 8; ~70-80% range with RECAP
+pi0_6,2025-11-17,https://arxiv.org/abs/2511.14759,Espresso,90,414,200,rubric,published_baseline,Paper §VI-A Fig 8; 90%+ range with RECAP
+pi0_6,2025-11-17,https://arxiv.org/abs/2511.14759,BoxAssembly,90,200,600,rubric,published_baseline,Paper §VI-C; 4 stages each ~90%; 600s time limit
