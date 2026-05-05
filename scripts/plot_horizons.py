@@ -479,8 +479,9 @@ def plot_sensitivity(df, save=True):
 
 def plot_binary_vs_mixed_frontier(df, save=True):
     """Plot the canonical (binary + rubric) frontier and the binary-only
-    frontier on the same axes. The two tell different stories about the
-    2019–2024 plateau.
+    frontier on the same axes. They are identical through Oct 2024 and
+    diverge only at the recent end, where rubric-scored generalist VLAs
+    (π0, π0.5) extend the mixed frontier above the binary line.
     """
     fig, ax = plt.subplots(figsize=(14, 8))
 
@@ -548,9 +549,9 @@ def plot_binary_vs_mixed_frontier(df, save=True):
 
     ax.set_xlabel('Date')
     ax.set_ylabel('Human-Equivalent Task Duration')
-    ax.set_title('Two frontiers tell different stories\n'
-                 'Mixed (binary + rubric): 14.1mo doubling, R² = 0.78, with 5-year plateau\n'
-                 'Binary-only: 17.8mo doubling, R² = 0.91, no plateau',
+    ax.set_title('Binary vs. mixed frontier — diverge only in 2024–2025\n'
+                 'Mixed (binary + rubric): 14.7mo doubling, R² = 0.93, N = 10\n'
+                 'Binary-only: 17.8mo doubling, R² = 0.91, N = 10',
                  fontsize=12)
     ax.legend(loc='upper left', fontsize=9, framealpha=0.9)
     ax.grid(True, alpha=0.3, linestyle='--')

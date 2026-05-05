@@ -1,4 +1,4 @@
-# The Task Horizon for Robotic Manipulation: A METR-Style Analysis
+# The Task Horizon for Robotic Manipulation: A Meta-Analysis of Published Results
 
 *How long a task can robots reliably complete — and how fast is that improving?*
 
@@ -8,7 +8,9 @@ METR's [time horizon analysis](https://metr.org/blog/2025-03-19-measuring-ai-abi
 
 One domain conspicuously absent from their analysis: **robotic manipulation**. Can we build the same chart for physical robots?
 
-We set out to answer this question by surveying a decade of robotic manipulation research (2016–2025), extracting the longest task each frontier system could complete at ≥50% success, and measuring that task in human-equivalent time. The result is, to our knowledge, the first "METR-style" task horizon plot for robotics.
+We set out to answer this question by surveying a decade of robotic manipulation research (2016–2025), extracting the longest task each frontier system could complete at ≥50% success, and measuring that task in human-equivalent time. The result is, to our knowledge, the first task horizon plot for robotics that aggregates across the field at this scale.
+
+**A note on what this is.** This study is a meta-analysis: we aggregated published numbers from 43 papers, technical reports, and benchmarks; we did not run a single new robot trial. METR's own studies are not meta-analyses — they evaluate every model on a shared, controlled task suite with measured human baselines, which is the gold standard for this kind of analysis. We can't replicate that for robotics today because the underlying infrastructure doesn't exist (more on why below, and on what it would take to build it in [On the future of robot eval](#on-the-future-of-robot-eval)). What we can do is rigorously aggregate what's already been published, document every judgment call, and publish the dataset so disagreements can be re-run rather than just argued.
 
 A caveat upfront: wide-scale unified evaluation is a harder problem for robotics than it is for LLMs. Manipulation results come in too many different shapes — different hardware, different task setups, different scoring protocols — to be made consistent the way LLM evaluations can be. That's a structural feature of the field, and it shapes everything that follows. We've done our best to extract a consistent signal from what's available; we don't claim the result is perfect, and we fully expect individual rows to be debated. The next section explains why the inconsistency is unavoidable for now.
 
@@ -44,11 +46,11 @@ Following METR, we define the **manipulation task horizon** as:
 
 **Human-equivalent time** is how long a competent human would take to perform the same task. This enables direct comparison with METR's LLM agent results, which use the same unit.
 
-We treat task duration as an **independently useful feature** — not as a proxy for task difficulty. Task difficulty is multidimensional (rigid vs. deformable objects, number of subtasks, degree of spatial reasoning required, etc.) and is not what we're directly measuring here. Duration is a meaningful capability metric on its own: it captures how long a robot can sustain reliable performance, regardless of whether a longer task is "harder" in any particular sense.
+We treat task duration as an **independently useful feature** — not as a proxy for task difficulty. Task difficulty is multidimensional (rigid vs. deformable objects, number of subtasks, degree of spatial reasoning required, etc.) and is not what we're directly measuring here. Duration is a meaningful capability metric on its own: it captures how long a robot can sustain reliable performance, regardless of whether a longer task is "harder" in any particular sense. The reason this matters operationally: per-step failure probability compounds over the length of a task, so each additional unit of autonomous duration directly determines how much human supervision a deployment requires. Task horizon is, in that sense, a fairly direct measure of the operational-cost axis of robot deployment, even when it doesn't tell you which specific tasks are harder than others.
 
-### Data Collection
+### Meta-Analytic Extraction
 
-We surveyed 43 robotic manipulation rows from published papers, benchmarks, and demonstrations spanning 2016–2025. For each, we recorded:
+This study is a meta-analysis. We surveyed 43 robotic manipulation rows from published papers, benchmarks, and demonstrations spanning 2016–2025 and re-aggregated their reported numbers under a single inclusion bar and a single set of conventions. We did not run any new robot trials. For each row, we recorded:
 
 - The longest task demonstrated at ≥50% success
 - The reported success rate and number of evaluation trials
@@ -213,17 +215,45 @@ Several parallel efforts inform this analysis:
 
 ## Limitations
 
-1. **Small frontier sample size.** The canonical frontier has 10 points spanning ~10 years. The exponential fit is suggestive but not definitive — the bootstrap CI (11.9–18.0 months) reflects the small N.
+1. **This is a meta-analysis, not a unified evaluation.** Every row is somebody else's reported number, extracted under our conventions and inclusion bar but not re-measured. We don't have shared tasks, shared hardware, or shared scoring across rows. METR's studies are not meta-analyses, and the methodology gap is real — see [On the future of robot eval](#on-the-future-of-robot-eval) for what closing it would take.
 
-2. **Heterogeneous evaluations.** Unlike METR, we cannot evaluate all systems on identical tasks. Hardware, evaluation protocols, and success criteria differ across every data point.
+2. **Publication and selection bias.** Authors choose which tasks to publish success rates for, and unsuccessful long-horizon attempts are systematically underreported. We may also be missing systems that pushed the frontier but weren't widely cited or didn't report success rates in a form we could include.
 
-3. **Human time estimation.** Some human-equivalent times are estimated rather than measured. We mark these in the dataset with confidence levels. METR themselves found this estimation is noisy even with controlled conditions.
+3. **Small frontier sample size.** The canonical frontier has 10 points spanning ~10 years. The exponential fit is suggestive but not definitive — the bootstrap CI (11.9–18.0 months) reflects the small N.
 
-4. **Selection bias.** We may be missing systems that pushed the frontier but weren't widely cited or didn't report success rates.
+4. **Heterogeneous evaluations.** Unlike METR, we cannot evaluate all systems on identical tasks. Hardware, evaluation protocols, and success criteria differ across every data point.
 
-5. **"Task horizon" ≠ "useful work."** As critics of METR's approach have noted, a 15-minute task horizon doesn't mean robots can replace 15 minutes of human work. Real tasks involve variability, error recovery, and context that benchmarks don't capture.
+5. **Human time estimation.** Some human-equivalent times are estimated rather than measured. We mark these in the dataset with confidence levels. METR themselves found this estimation is noisy even with controlled conditions.
 
-6. **Task length is one capability axis, not the only one.** The horizon metric captures temporal extension — how long the robot can sustain a coherent task. It does not capture object generalization, robustness across novel environments, in-hand dexterity, error recovery, or speed relative to humans. A robot that completes one 12-minute task at 70% rubric in a curated lab is not strictly more capable than one that completes 30-second tasks at 95% binary across 100 unseen kitchens — those are different kinds of progress, and a single duration-vs-time chart compresses them into one number.
+6. **"Task horizon" ≠ "useful work."** As critics of METR's approach have noted, a 15-minute task horizon doesn't mean robots can replace 15 minutes of human work. Real tasks involve variability, error recovery, and context that benchmarks don't capture.
+
+7. **Task length is one capability axis, not the only one.** The horizon metric captures temporal extension — how long the robot can sustain a coherent task. It does not capture object generalization, robustness across novel environments, in-hand dexterity, error recovery, or speed relative to humans. A robot that completes one 12-minute task at 70% rubric in a curated lab is not strictly more capable than one that completes 30-second tasks at 95% binary across 100 unseen kitchens — those are different kinds of progress, and a single duration-vs-time chart compresses them into one number.
+
+## On the future of robot eval
+
+What we did here is the meta-analytic version of METR's study. The version that actually matches METR's rigor — the version the field will need to track progress with confidence — does not yet exist. We don't think we should be the ones to build it, and we don't think any single lab should. But the conversation about *how to evaluate* manipulation is now as important as the policies themselves, and we want to sketch what a serious version of this study would look like, what it would still miss, and who we think should be paying attention.
+
+### What a rigorous version would look like
+
+**A standardized task suite.** A curated set of 30–100 tasks spanning ~5 seconds to several hours of human-equivalent time, with duration as a designed experimental variable rather than a byproduct of whatever the lab cared about. Tasks would need to span capability dimensions (rigid vs. deformable, dexterity, mobile vs. fixed-base, single vs. bimanual) and be specified well enough to be replicable across labs. Versioned releases with stable anchor tasks would let the trend line stay continuous as the suite evolves.
+
+**Heterogeneous hardware, tracked as a covariate.** We don't think it's possible to call for hardware unification right now — the manipulation hardware landscape is still moving too quickly, and there's no version of "this is what a manipulation system runs on" the way "this is what an LLM looks like" exists today. The realistic path is to allow any hardware and track it explicitly: form factor, DoF count, gripper type, mobile/fixed-base, sensor stack. Some of the noise that currently lives in cross-paper comparisons would move into the model — but at least it would be measurable.
+
+**Real-only evaluation.** Sim is useful for development, but sim-to-real gaps vary enough by task that mixing the two on a capability frontier will mislead. A serious benchmark for *what robots can actually do today* should run on physical hardware, with the cost and slowness that implies. This is the dimension where it is most tempting to compromise, and where compromising would do the most damage to the value of the resulting curve.
+
+**Real human baselines.** Contracted humans timing each task, multiple humans per task, recorded with confidence tiers — the way METR did. Without measured baselines, the x-axis of the chart is the loosest part of the analysis.
+
+**Pre-registered evaluation, third-party verified.** Researchers would submit policies before knowing the held-out task set, and a neutral lab would run evaluations with N≥50 trials per (system, task) and a documented success rubric. METR's approach for LLMs; nothing equivalent exists for robots. The robotics field has historically been open self-report, and once a benchmark starts to matter, that creates strong incentives to overfit. Pre-registration and third-party eval are how that gets resisted.
+
+**Funding and governance.** Centralized eval, hardware fleet, human baselines, and staff probably run $5–20M/year. Plausible models include a frontier-lab consortium (the MLCommons playbook), a philanthropic foundation, or a public-sector vehicle (NIST, DOE). ManipulationNet, RoboArena, and FurnitureBench are early steps in this direction — none of them yet match METR's rigor for robotics, but they are the closest infrastructure that exists.
+
+### What such a benchmark would still miss
+
+Even a clean, well-funded, METR-rigor task-horizon benchmark would only measure one slice of the deployment gap. Real deployments aren't graded on whether a robot can autonomously fold a shirt — they're graded on whether the robot can ask the right clarifying question when the laundry includes something delicate, recover from its own mistakes without a human reset, hand a tool to a person and get one back, and gather context from a novel environment before deciding what to do. Task horizon measures a single capability axis: how long the autonomous run can be before reliability drops below threshold. The gap between "robot completes 15-minute task at 70%" and "robot is useful in someone's home" lives largely *off* that axis — in context-gathering, error recovery, and human-robot collaboration. We see those as complementary frontiers, not substitutes, and we think the next generation of robotics evals will need to measure them explicitly rather than hope that longer task horizons drag them along.
+
+### A call to the community
+
+We're publishing this meta-analysis partly because the absence of a rigorous robot eval makes the kind of trend-line analysis the rest of the AI field has come to rely on impossible to do right now. We don't have the infrastructure or the mandate to build the benchmark we describe above. We think this is a problem worth the **startup, research, and investor communities** taking seriously. There are real reasons the obvious version of this doesn't exist — hardware heterogeneity, the cost of real-world trials, no clear funder, no incentive for individual labs to accept third-party eval — and any of those is a potentially good reason it still won't exist a year from now. But the field is making real progress, and without shared eval infrastructure no one can say with confidence how fast. Capital allocation, research priorities, and the broader narrative around when robots become useful all hinge on that question. If you're working on this, building toward it, or thinking about funding it — we'd like to hear from you.
 
 ## Conclusion
 
