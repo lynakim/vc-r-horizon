@@ -182,22 +182,6 @@ If we ever want to revisit this, the place to start is dropping non-monotonic pa
 
 The two frontiers are identical from 2016 through Oct 2024. They split only at the last two points: π0 laundry (300s, 70% rubric, Oct 2024) and π0.5 bedroom (720s, 70% rubric, Apr 2025). Binary-only continues through ALOHA Unleashed Hang Shirt (120s, Oct 2024), BRS Take Trash Outside (130s, Mar 2025), and π0.6 single-shirt (200s, Nov 2025). Mixed: 14.7 mo doubling, R²=0.93, N=10. Binary-only: 17.8 mo doubling, R²=0.91, N=10. The gap between the curves is real but recent and narrow — it's a 2024–2025 generalist-VLA phenomenon. Plot: `figures/binary_vs_mixed_frontier.png`.
 
----
-
-## Entry 7 — Foundation-model rubrics may overstate capability gain (2026-05-04)
-
-The 2024+ generalist VLAs (π0, π0.5, π0.6, GR00T N1, Gemini Robotics 1.5) report rubric scores rather than binary task completion because their target tasks — full-laundry-basket, kitchen cleanup, espresso — are too multi-step for an all-or-nothing metric to be useful for training. That's a reasonable choice for those papers. But it means our recent frontier is being read off a different yardstick than the rest of the curve. π0.5's 70% rubric on a 720s task is real capability progress; it is not "70% of trials fully succeed at bedroom cleanup." The binary frontier at the same date sits at 200s — 3.6× shorter. Both numbers are correct; they measure different things, and a future reader of the chart should know which.
-
----
-
-## Entry 8 — The field needs a consistent scoring convention (2026-05-04)
-
-Every long-horizon paper currently picks its own rubric structure: 5-point laundry, 7-point box assembly, 8-point dishes-in-sink. These aren't comparable across papers and aren't directly comparable to binary success either. Anyone repeating this analysis in 12 months hits the same problem multiplied by however many new generalist papers ship. The fix is community-level — a shared definition of "fully completed" for canonical long-horizon tasks. Until that exists, any longitudinal horizon analysis has to either pick one metric and accept it, or carry both (we carried both, at the cost of a `success_type` column, an extra plot, and a paragraph of explanation in the post).
-
----
-
-## Entry 9 — Task length is one capability axis, not the only one (2026-05-04)
-
-The horizon metric captures temporal extension. It does not capture: object generalization, environmental robustness, in-hand dexterity, error recovery, or speed relative to humans. A robot that does one 12-minute task at 70% rubric in a curated lab is not strictly more capable than one that does 30-second tasks at 95% binary in 100 unseen kitchens — those are different kinds of progress. The blog post calls this out in the methodology section ("task duration as an independently useful feature, not as a proxy for task difficulty"); future updates should keep that framing prominent as foundation-model results continue to pile up at long durations on increasingly narrow task definitions.
+The forward-looking implications — that the recent rubric run is real but ambiguous progress, that the field needs a consistent scoring convention, that task length is one capability axis among many — were folded into the blog post (binary-vs-rubric section + Limitation #6) rather than tracked here.
 
 ---

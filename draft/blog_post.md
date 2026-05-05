@@ -177,7 +177,7 @@ We track this distinction explicitly via the `success_type` column. The implicat
 - If we restricted the frontier to **binary success only**, the longest reliable point through 2025 is π0.6's single-shirt fold at 200s / 97% (Nov 2025).
 - The **≥80% binary frontier** shows steady progress without the rubric extension: ALOHA Unleashed (gear insertion 95% / 80s, Oct 2024), Gemini Robotics (lunch-box pack 100% / 120s, Mar 2025), and π0.6 (single-shirt fold 97% / 200s, Nov 2025).
 
-This means the field's recent narrative ("we can do 10-minute household tasks") rests primarily on partial-credit rubrics, not full task completion. Both are progress, but they measure different things.
+This means the field's recent narrative ("we can do 10-minute household tasks") rests primarily on partial-credit rubrics, not full task completion. Both are progress, but they measure different things — and the divergence between them is recent and narrow. The binary and mixed frontiers are identical from 2016 through October 2024, splitting only at the last two rubric points (π0 in Oct 2024 and π0.5 in Apr 2025). The recent rubric run could be read as "rapid generalist progress" or as "incompatible yardsticks make the trend hard to read" — and both readings are partly right, which is why we carry both curves rather than picking one. A consistent scoring convention for long-horizon tasks — a community-level shared definition of "fully completed" for canonical tasks like a folded basket of laundry or a clean kitchen — would resolve the ambiguity. Until that exists, anyone repeating this analysis in a year will face the same problem multiplied by however many new generalist papers ship.
 
 ### Comparison with METR Domains
 
@@ -222,6 +222,8 @@ Several parallel efforts inform this analysis:
 4. **Selection bias.** We may be missing systems that pushed the frontier but weren't widely cited or didn't report success rates.
 
 5. **"Task horizon" ≠ "useful work."** As critics of METR's approach have noted, a 15-minute task horizon doesn't mean robots can replace 15 minutes of human work. Real tasks involve variability, error recovery, and context that benchmarks don't capture.
+
+6. **Task length is one capability axis, not the only one.** The horizon metric captures temporal extension — how long the robot can sustain a coherent task. It does not capture object generalization, robustness across novel environments, in-hand dexterity, error recovery, or speed relative to humans. A robot that completes one 12-minute task at 70% rubric in a curated lab is not strictly more capable than one that completes 30-second tasks at 95% binary across 100 unseen kitchens — those are different kinds of progress, and a single duration-vs-time chart compresses them into one number.
 
 ## Conclusion
 
