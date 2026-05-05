@@ -181,25 +181,6 @@ def plot_subtasks(df):
     plt.close(fig)
 
 
-# ── 7. Success rate by sim vs real (box plot) ─────────────────────────────────
-def plot_success_by_sim_real(df):
-    fig, ax = plt.subplots(figsize=(7, 5))
-    groups = [df[df['sim_or_real'] == g]['success_rate'].dropna()
-              for g in ['sim', 'real']]
-    bp = ax.boxplot(groups, patch_artist=True, widths=0.4,
-                    medianprops=dict(color='white', linewidth=2))
-    colors = ['#4CAF50', '#9C27B0']
-    for patch, color in zip(bp['boxes'], colors):
-        patch.set_facecolor(color)
-        patch.set_alpha(0.7)
-    ax.set_xticklabels(['Simulation', 'Real World'])
-    ax.set_ylabel('Success Rate (%)')
-    ax.set_title('Success Rate: Sim vs Real World')
-    plt.tight_layout()
-    _save(fig, 'dist_success_sim_vs_real.png')
-    plt.close(fig)
-
-
 def main():
     print("Loading data...")
     df = load()
@@ -214,7 +195,6 @@ def main():
     plot_breakdowns(df)
     plot_papers_per_year(df)
     plot_subtasks(df)
-    plot_success_by_sim_real(df)
     print("Done.")
 
 
