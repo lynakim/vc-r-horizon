@@ -550,8 +550,8 @@ def plot_binary_vs_mixed_frontier(df, save=True):
     ax.set_xlabel('Date')
     ax.set_ylabel('Human-Equivalent Task Duration')
     ax.set_title('Binary vs. mixed frontier — diverge only in 2024–2025\n'
-                 'Mixed (binary + rubric): 14.7mo doubling, R² = 0.93, N = 10\n'
-                 'Binary-only: 17.8mo doubling, R² = 0.91, N = 10',
+                 'Mixed (binary + rubric): 14.9mo doubling, R² = 0.92, N = 11\n'
+                 'Binary-only: 18.2mo doubling, R² = 0.89, N = 11',
                  fontsize=12)
     ax.legend(loc='upper left', fontsize=9, framealpha=0.9)
     ax.grid(True, alpha=0.3, linestyle='--')

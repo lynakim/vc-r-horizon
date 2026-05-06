@@ -1,37 +1,37 @@
 {
   "frontier_definition": "real-world systems, success_rate >= 50%",
   "overall": {
-    "growth_rate_per_year": 0.5669018559177559,
-    "intercept": 1.1373798994860378,
-    "doubling_time_months": 14.672321284349536,
-    "doubling_time_years": 1.2226934403624614,
-    "r_squared": 0.9282536980392597,
+    "growth_rate_per_year": 0.5594977070561233,
+    "intercept": 1.2502682459243784,
+    "doubling_time_months": 14.866488390961337,
+    "doubling_time_years": 1.2388740325801113,
+    "r_squared": 0.9209950423777601,
     "growth_rate_95ci": [
-      0.46247355048285194,
-      0.6991954228891785
+      0.4476044925216117,
+      0.6864931114156404
     ],
     "doubling_time_95ci_months": [
-      11.896196534509778,
-      17.985387830363628
+      12.11631410192449,
+      18.58284781696586
     ],
-    "n_points": 10
+    "n_points": 11
   },
   "by_category": {
     "tabletop": {
-      "growth_rate_per_year": 0.519578404850608,
-      "intercept": 1.288628924183823,
-      "doubling_time_months": 16.00868336533523,
-      "doubling_time_years": 1.3340569471112693,
-      "r_squared": 0.9226247621785612,
+      "growth_rate_per_year": 0.5146844433874553,
+      "intercept": 1.4330784522911324,
+      "doubling_time_months": 16.160904557314772,
+      "doubling_time_years": 1.3467420464428976,
+      "r_squared": 0.9067700267844626,
       "growth_rate_95ci": [
-        0.39889452775650447,
-        0.6836124760200317
+        0.40180186433129284,
+        0.6735735669696941
       ],
       "doubling_time_95ci_months": [
-        12.167370342836765,
-        20.852043805917344
+        12.348712263368231,
+        20.701163695599966
       ],
-      "n_points": 7
+      "n_points": 8
     },
     "mobile_manipulation": {
       "growth_rate_per_year": 0.44356549409201623,
@@ -52,25 +52,26 @@
   },
   "sim_sensitivity": {
     "real_only": {
-      "growth_rate_per_year": 0.5669018559177559,
-      "intercept": 1.1373798994860378,
-      "doubling_time_months": 14.672321284349536,
-      "doubling_time_years": 1.2226934403624614,
-      "r_squared": 0.9282536980392597,
+      "growth_rate_per_year": 0.5594977070561233,
+      "intercept": 1.2502682459243784,
+      "doubling_time_months": 14.866488390961337,
+      "doubling_time_years": 1.2388740325801113,
+      "r_squared": 0.9209950423777601,
       "growth_rate_95ci": [
-        0.46247355048285194,
-        0.6991954228891785
+        0.4476044925216117,
+        0.6864931114156404
       ],
       "doubling_time_95ci_months": [
-        11.896196534509778,
-        17.985387830363628
+        12.11631410192449,
+        18.58284781696586
       ],
-      "n_points": 10,
+      "n_points": 11,
       "frontier_systems": [
         "Levine et al. Grasping",
         "Dex-Net 2.0/4.0",
         "QT-Opt",
         "OpenAI Dactyl - Block",
+        "Form2Fit",
         "SayCan",
         "Inner Monologue",
         "Code as Policies",
@@ -80,25 +81,26 @@
       ]
     },
     "sim_and_real": {
-      "growth_rate_per_year": 0.5669018559177559,
-      "intercept": 1.1373798994860378,
-      "doubling_time_months": 14.672321284349536,
-      "doubling_time_years": 1.2226934403624614,
-      "r_squared": 0.9282536980392597,
+      "growth_rate_per_year": 0.5594977070561233,
+      "intercept": 1.2502682459243784,
+      "doubling_time_months": 14.866488390961337,
+      "doubling_time_years": 1.2388740325801113,
+      "r_squared": 0.9209950423777601,
       "growth_rate_95ci": [
-        0.46247355048285194,
-        0.6991954228891785
+        0.4476044925216117,
+        0.6864931114156404
       ],
       "doubling_time_95ci_months": [
-        11.896196534509778,
-        17.985387830363628
+        12.11631410192449,
+        18.58284781696586
       ],
-      "n_points": 10,
+      "n_points": 11,
       "frontier_systems": [
         "Levine et al. Grasping",
         "Dex-Net 2.0/4.0",
         "QT-Opt",
         "OpenAI Dactyl - Block",
+        "Form2Fit",
         "SayCan",
         "Inner Monologue",
         "Code as Policies",
@@ -108,5 +110,5 @@
       ]
     }
   },
-  "generated_at": "2026-05-05T14:16:07.777479"
+  "generated_at": "2026-05-05T14:29:56.609014"
 }

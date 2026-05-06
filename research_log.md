@@ -185,3 +185,31 @@ The two frontiers are identical from 2016 through Oct 2024. They split only at t
 The forward-looking implications — that the recent rubric run is real but ambiguous progress, that the field needs a consistent scoring convention, that task length is one capability axis among many — were folded into the blog post (binary-vs-rubric section + Limitation #6) rather than tracked here.
 
 ---
+
+## Entry 7 — Dactyl→SayCan gap audit: filled with four 2019–2021 rows (2026-05-05)
+
+**Trigger:** The chart showed essentially zero real-world progress between Dactyl Block (Jul 2018) and SayCan (Apr 2022) — only TossingBot (Apr 2019) sat in that window. That's not what actually happened in the field; the prior Entry 4 audit was scoped to *240s+ frontier* candidates and never looked at shorter-horizon real-world results from the period.
+
+**Verification of the gap (the original framing):** Still true at the 240s+ tier. Nothing in 2019–2021 combines (≥240s task) × (≥70% success) × (N≥10) × (autonomous) × (documented protocol). The π0 / SutureBot self-quotes from Entry 4 still hold at that bar.
+
+**But:** there's plenty of *shorter-horizon* real-world progress that should be visible on the chart. Four rows added (all real, autonomous, N≥10, documented protocol):
+
+- **Form2Fit** (2019-10-31, arxiv 1910.13675) — UR5e + suction kit assembly, 94% on novel kits, N=20/condition. ICRA 2020.
+- **MT-Opt** (2021-04-16, arxiv 2104.08212) — multi-task QT-Opt successor, 89% on common-task lifting (multi-task transfer to rare tasks ~50%). 800k+ shared real-robot episodes; direct precursor to the RT-1 dataset pipeline.
+- **Implicit Behavioral Cloning** (2021-09-01, arxiv 2109.00137) — Franka, ~87% on push-block precise insertion (1mm tolerance) vs ~55% explicit BC. 7 real-robot tasks at N≈50 each. CoRL 2021.
+- **RGB-Stacking** (2021-10-12, arxiv 2110.06192) — DeepMind, Sawyer arm, sim-to-real 3-block stacking. 82% Skill Mastery / 54% Skill Generalisation. CoRL 2021.
+
+**Frontier impact:** Form2Fit (30s @ 94%, Oct 2019) becomes a new frontier point — slots between Dactyl Block (10s, Jul 2018) and SayCan (90s, Apr 2022) at ≥50% reliability. The other three are below the envelope. New ≥50% real-world frontier: Levine → Dex-Net → QT-Opt → Dactyl Block → **Form2Fit** → SayCan → Inner Monologue → Code as Policies → ALOHA Unleashed Hang Shirt → π0 → π0.5.
+
+**Doubling-time numbers (≥50% real, OLS on log-duration ~ date):**
+
+- Before: 14.7 mo, R² 0.93, N=10
+- After: 14.9 mo, R² 0.92, N=11
+
+Headline barely moved. The ≥80% scenario is unaffected (Form2Fit at 94% sits naturally in the existing ≥80% sequence; doubling stays at ~20 mo, R² ≈ 0.92).
+
+**Reframe of earlier entries:** Entry 1's "Dactyl as ahead-of-its-time outlier with a 5-year flat stretch" framing was already softened in the 2026-05-02 entry after the Rubik's Cube row was dropped. With Form2Fit now on the frontier, the post-2018 ≥50% trajectory has a real Oct-2019 anchor and the "flat stretch" framing is fully retired. Mention of it remains in earlier entries as historical record only.
+
+**Files changed:** `scripts/rebuild_dataset.py` (4 new rows), `data/manipulation_horizons.csv` (47 rows now), `data/analysis_results.json`, all regenerated figures.
+
+---

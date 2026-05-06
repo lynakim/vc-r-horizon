@@ -97,6 +97,54 @@ ROWS = [
          notes='85% success grasping+tossing; self-supervised; 10k+ real trials'),
 
     # ============================================================
+    # 2019–2021 — gap-fill rows added 2026-05-05. None are frontier-relevant
+    # (all task durations <= 30s and below the Dactyl 10s/240s anchors), but
+    # they document that real-world progress did not stop between Dactyl
+    # (Jul 2018) and SayCan (Apr 2022). Verified against the 5-criterion bar
+    # via web research; human-time values are defended_estimate (none of these
+    # papers report a human baseline).
+    # ============================================================
+    dict(date='2019-10-31', system_name='Form2Fit',
+         paper_url='https://arxiv.org/abs/1910.13675',
+         task_description='Kit assembly: assemble multi-object kit via shape-matching pretext',
+         human_time_seconds=30, human_time_source='defended_estimate',
+         confidence='medium', success_rate=94, num_trials=20, num_subtasks=4,
+         category='tabletop', sim_or_real='real',
+         hardware='UR5e + suction gripper', data_quality='paper_demo',
+         success_type='binary',
+         notes='ICRA 2020. 94.3% novel-kit assembly via shape-matching pretext objective. N=20 per condition (5 kits x 4 trials). Self-supervised on 12 hours of disassembly. Human time defended_estimate (paper reports no baseline)'),
+
+    dict(date='2021-04-16', system_name='MT-Opt',
+         paper_url='https://arxiv.org/abs/2104.08212',
+         task_description='Common-task lifting (head of 12-task multi-task fleet learning)',
+         human_time_seconds=10, human_time_source='defended_estimate',
+         confidence='medium', success_rate=89, num_trials=100, num_subtasks=1,
+         category='tabletop', sim_or_real='real',
+         hardware='7x KUKA / Everyday Robots fleet', data_quality='benchmark',
+         success_type='binary',
+         notes='Multi-task QT-Opt successor. Headline 89% on common-task lifting; multi-task transfer to rare/novel tasks ~50%. 800k+ shared real-robot episodes across 12 tasks. Direct precursor to RT-1 dataset pipeline'),
+
+    dict(date='2021-09-01', system_name='Implicit Behavioral Cloning',
+         paper_url='https://arxiv.org/abs/2109.00137',
+         task_description='Push-block precise insertion (1mm tolerance, real Franka)',
+         human_time_seconds=15, human_time_source='defended_estimate',
+         confidence='medium', success_rate=87, num_trials=50, num_subtasks=2,
+         category='tabletop', sim_or_real='real',
+         hardware='Franka Panda', data_quality='benchmark',
+         success_type='binary',
+         notes='CoRL 2021. Energy-based BC. ~87% on push-1d-block precise insertion vs ~55% explicit BC; 7 real-robot tasks total. N~50 per task. Human time defended_estimate'),
+
+    dict(date='2021-10-12', system_name='RGB-Stacking',
+         paper_url='https://arxiv.org/abs/2110.06192',
+         task_description='Stack 3 colored objects in canonical order (sim-to-real)',
+         human_time_seconds=15, human_time_source='defended_estimate',
+         confidence='medium', success_rate=82, num_trials=200, num_subtasks=2,
+         category='tabletop', sim_or_real='real',
+         hardware='Rethink Sawyer + parallel-jaw gripper', data_quality='benchmark',
+         success_type='binary',
+         notes='DeepMind, CoRL 2021. Sim-to-real with one-step real-data improvement: 82% on training triplets (Skill Mastery) vs 54% on held-out test triplets (Skill Generalisation). 68% zero-shot from sim. ~200 episodes per triplet across 5 triplets'),
+
+    # ============================================================
     # 2022 — VLA precursors and LLM-as-planner
     # ============================================================
     dict(date='2022-02-04', system_name='BC-Z',

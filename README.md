@@ -9,9 +9,9 @@
 Inspired by [METR's task horizon analysis](https://metr.org/blog/2025-03-19-measuring-ai-ability-to-complete-long-tasks/) for LLM agents, this project tracks the **longest manipulation task** that a robot can complete at ≥50% success rate, measured in human-equivalent time, from 2016 to 2025.
 
 Key findings:
-- The real-world manipulation task horizon is **doubling every ~14.7 months** (95% CI: 11.9–18.0 months)
+- The real-world manipulation task horizon is **doubling every ~14.9 months** (R²=0.92, N=11)
 - This is ~2.1x slower than METR's LLM agent findings (~7 months), closer to self-driving (~20 months)
-- A multi-year stall (2018–2022) at sub-15-second tasks gave way to multi-minute household tasks once the foundation-model era began
+- The ≥50% frontier was carried by short tabletop tasks (Form2Fit kit assembly, 30s, 2019) through to SayCan-class multi-step kitchen tasks (90s+, 2022) before foundation-model VLAs pushed it past 5-minute household tasks in 2024–2025
 - The field went from 5-second grasps (2016) to 10-minute household tasks (2025)
 - Many viral robot demos (e.g., autonomous cooking) were actually teleoperated — rigorous success rate tracking matters
 
@@ -19,7 +19,7 @@ Key findings:
 
 ```
 data/
-  manipulation_horizons.csv   # 43 systems with success rates, human times, sources
+  manipulation_horizons.csv   # 47 systems with success rates, human times, sources
   analysis_results.json       # Computed doubling times and fit statistics
 scripts/
   plot_horizons.py            # Generate all visualizations
