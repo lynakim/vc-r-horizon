@@ -4,6 +4,25 @@
 
 ---
 
+## Entry — Post-π0 doubling time slice (2026-05-08)
+
+**Question asked:** What does the doubling time look like if we restrict to results after the π0 release (2024-10-31)?
+
+**Findings (real-world, ≥50%):**
+
+| Slice | Doubling | R² | N | Notes |
+|---|---|---|---|---|
+| Strict frontier post-π0 (π0 → π0.5) | ~4.5 mo | — | 2 | Two-point implied rate, 300s → 720s in 5.7 mo |
+| Frontier from ALOHA Unleashed (Oct 13, 2024) → π0.5 | ~3.0 mo | 0.81 | 3 | Adds last pre-π0 frontier point |
+| Binary-only frontier from ALOHA Unleashed → π0.6 | ~17.2 mo | 0.96 | 3 | ALOHA Unleashed Hang Shirt 120s → BEHAVIOR Trash 130s → π0.6 single-shirt fold 200s |
+| All real-world ≥50% post-π0 points (log-linear) | ~6.5 mo | 0.15 | 15 | Scattered tasks, not frontier — too noisy to read |
+
+**Takeaway:** No new framing here — the post-π0 "acceleration" is exactly the rubric-vs-binary story already in the blog post. The 3–4.5 mo number is two rubric-scored generalist papers from the same lab (π0 → π0.5). Restrict to binary completion and the post-π0 frontier doubles *slower* than the full-history 14.9 mo, not faster. With N=2–3 over a 12-month window, none of these are statistically meaningful.
+
+**Did not modify the dataset or blog.** Logged here so the question doesn't have to be re-derived.
+
+---
+
 ## Entry — Dactyl Rubik's Cube row removed (2026-05-02)
 
 **Decision:** Dropped the `OpenAI Dactyl - Rubik's Cube` row from `manipulation_horizons.csv`.
