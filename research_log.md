@@ -232,3 +232,17 @@ Headline barely moved. The ≥80% scenario is unaffected (Form2Fit at 94% sits n
 **Files changed:** `scripts/rebuild_dataset.py` (4 new rows), `data/manipulation_horizons.csv` (47 rows now), `data/analysis_results.json`, all regenerated figures.
 
 ---
+
+## Entry 8 — Considered (and deferred) collecting our own human-time baselines (2026-05-08)
+
+**Context:** 23 of 47 main-CSV rows (49%) carry `human_time_source = defended_estimate`, including all four lower-frontier anchor points (Levine, Dex-Net, QT-Opt, Dactyl Block at 4–10s). The two genuinely measured rows in the dataset are HIL-SERL (BC baseline at 16.1s, N=100) and ACT/ALOHA slot-battery (paper-reported direct human time); the rest of the `published_baseline` column is mostly episode timeouts repurposed as task length, which is a loose upper bound rather than a measurement.
+
+**What we considered:** A short baselining session — a single "single-object bin pick" trial (covers ~10 frontier and near-frontier rows in the 4–8s cluster), an in-hand block reorient (Dactyl Block, frontier), and the multi-step kitchen tasks (SayCan, Inner Monologue, Code as Policies, UMI, GR-1). Estimated ~2–3 hours of stopwatch work. Highest leverage: the four lower-frontier rows that anchor the bottom of the exponential fit, plus the 90–200s multi-step rows that carry weight near the upper end.
+
+**Decision: not doing it now.** Optimising for time-to-publish on the blog post. The doubling time finding is robust across reasonable perturbations to these short-end estimates (we've already checked sensitivity in Entries 1 and 3 — rate barely moves), and the methodology section is honest about the `defended_estimate` provenance. Spending another half-day on stopwatch work would tighten the lower-left of the curve a bit but wouldn't change the headline.
+
+**What it would gain if we revisit:** A new `human_time_source = direct_baseline` value, tighter CI on the early-frontier intercept, and a better answer to "how do you know it's 4 seconds and not 7" if a reviewer pushes on Levine / Dex-Net / QT-Opt. Filed as research-ideas item #6 with the protocol notes (start state, success criterion, median-of-N) that came out of the Entry 8 discussion. The published-baseline reference cluster (HIL-SERL, ACT/ALOHA) sets the protocol bar.
+
+**Status:** filed, not scheduled.
+
+---

@@ -47,3 +47,25 @@ We explored plotting one success-vs-duration curve per system (fitted exponentia
 - **Collect multi-task evaluation data.** The right fix: evaluate the same system at several task durations and fit the curve from actual observations. Currently almost no papers do this systematically. Worth flagging as a gap future benchmarks should fill.
 
 Note the connection to idea #3 (task difficulty framing): the curve-fitting problem is partly a symptom of duration and complexity being conflated. Fitting a single curve across different tasks implicitly assumes duration is the only variable that drives success rate changes — which it isn't.
+
+## 6. Direct human-time baselines for `defended_estimate` rows
+
+23 of 47 main-CSV rows (49%) — including all four lower-frontier anchors (Levine, Dex-Net, QT-Opt, Dactyl Block at 4–10s) — use `human_time_source = defended_estimate`. The dataset has only two genuinely measured human times (HIL-SERL BC baseline 16.1s; ACT/ALOHA slot-battery, paper-reported); most of the `published_baseline` column is episode timeouts used as a loose upper bound on task length, not actual measurements. See research_log Entry 8 for why we chose not to do this before publishing.
+
+**Highest-leverage measurements** (from the Entry 8 discussion):
+
+- *Single-object bin pick* — one careful baselining session (20 trials, household objects) propagates to ~10 rows in the 4–8s cluster: Levine, Dex-Net, QT-Opt, TossingBot, RT-1, RT-2, RT-X, Octo, OpenVLA, BC-Z. Three of those (Levine, Dex-Net, QT-Opt) are on the ≥50% real frontier and anchor the bottom of the exponential.
+- *In-hand block reorient to target face* — Dactyl Block (10s, frontier).
+- *Multi-step kitchen tasks at 60–200s* — SayCan, Inner Monologue, Code as Policies, UMI dish washing, GR-1, π0.6 SimpleLaundry. Each needs its own session matching the paper's start state.
+
+**Protocol** (matches the HIL-SERL / ACT-ALOHA bar):
+
+- Time from the robot's exact start state to the robot's success criterion. No setup, no cleanup.
+- Binary completion only — not partial credit, even when the paper reports rubric_progress.
+- Median of 3–5 trials, not single-shot.
+- Match the paper's exact starting state photo / description (a "messy" shirt and a flat shirt differ ~5x).
+- Record per measurement: task name, paper, start-state photo, success criterion (verbatim from paper), N, median, range, date, who measured.
+
+**Schema change required:** add `direct_baseline` as a `human_time_source` value alongside `defended_estimate`, `published_baseline`, `observed_demo`. Don't overwrite existing `defended_estimate` rows — keep both for audit.
+
+**Expected impact on results:** small. Sensitivity in research_log Entries 1 and 3 already shows the doubling-time finding is robust to reasonable perturbations of the short-end estimates. The value is in tightening reviewer-facing CI on the lower-left intercept, not in shifting the headline.
